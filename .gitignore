@@ -1,8 +1,8 @@
 # config
-config.php
+cushitic/config.php
 
 #data
 
 #tools
-deplocal.sh
-depremote.sh
+cushitic/deplocal.sh
+cushitic/depremote.sh
