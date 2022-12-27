@@ -5,7 +5,7 @@ const dataSource = {
     viewmode: "1",
     showrestorebtn: "0",
     valuefontcolor: "#FFFFFF",
-    yaxismaxvalue: "1100",
+    yaxismaxvalue: "1055",
     yaxisminvalue: "0",
     divlinealpha: "0"
   },

@@ -122,6 +122,11 @@ $(document).ready(function() {
 <body>
 <!--h1>Welcome to Cushitic Language Family Corpora</h1-->
 <div id="loginDiv">
+<?php
+ if($op != 'search'){
+   echo "<div id=\"chart-container\"></div>";
+ }
+?>
      <form method="get" action="index.php">
          <input type="hidden" name="op" value="search" />  
          <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
@@ -133,10 +138,5 @@ $(document).ready(function() {
 <div id="restult_table">
 <?php echo $result; ?>
 </div>
-<?php
- if($op != 'search'){
-   echo "<div id=\"chart-container\"></div>";
- }
-?>
 </body>
 </html>

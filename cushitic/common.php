@@ -5,7 +5,7 @@ $translateLA = array('UKNOWN' => 'Ma garan / unknown',
                      'so'     => 'Somali', 
                      'sa'     => 'Saho',
                      'ba'     => 'Bayso',
-                     're'     => 'Rendile'
+                     're'     => 'Rendile',
                      'bo'     => 'Boni',
                      'ma'     => 'Maay',
                      'ar'     => 'Arbore',
