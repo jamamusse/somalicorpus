@@ -7,3 +7,4 @@ cushitic/config.php
 cushitic/deplocal.sh
 cushitic/depremote.sh
 .DS_Store
+*.swp
