@@ -6,5 +6,10 @@ $translateLA = array('UKNOWN' => 'Ma garan / unknown',
                      'sa'     => 'Saho',
                      'ba'     => 'Bayso',
                      're'     => 'Rendile'
+                     'bo'     => 'Boni',
+                     'ma'     => 'Maay',
+                     'ar'     => 'Arbore',
+                     'el'     => 'El Molo',
+                     'da'     => 'Dasanach'
                     );
 ?>

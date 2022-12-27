@@ -5,18 +5,16 @@ function add_this($word, $cat, $def){
    list($word, $m) = preg_split('/-/', $word, 2);
    $meaning = ($m ? $m : 0);
 
-   list($d, $seealso) = preg_split('/^see /', $def, 2);
-
-   $sql = "$word, $meaning, $cat, $def, ==> $seealso";
+   $sql = "$word, $meaning, $cat, $def";
    $word = addslashes($word);
    $cat  = addslashes($cat);
    $def  = addslashes($def);
    $seealso = addslashes($seealso);
 
    $sql = "INSERT INTO `rsol_d_cushiticwords` 
-(`recno`, `word`, `language`, `english`, `def_dictionary`, `def_english`, `source`, `category`, `base`, `rel`, `weight`, `meaning`, `srcfile`, `expanded`)
+(`recno`, `word`, `language`, `english`, `def_dictionary`, `def_english`, `source`, `category`, `base`, `weight`, `meaning`, `srcfile`, `expanded`)
 VALUES 
-(NULL, '$word', 'ba', '$def', '$def', '$def', 'JMJ2022Somalicorpus', '$cat', '$word', '$seealso', '0', '$meaning', '$sourcefile', 0);";
+(NULL, '$word', 'ba', '$def', '$def', '$def', 'JMJ2022Somalicorpus', '$cat', '$word', '0', '$meaning', '$sourcefile', 0);";
 
    $res = $conn->query ($sql);
    if ($conn->isResultSet ($res)) {
@@ -26,6 +24,7 @@ VALUES
    }
    return $res;
 }
+
 function do_check(){
   global $conn;
   $suspend = 1;
