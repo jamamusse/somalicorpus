@@ -6,3 +6,4 @@ cushitic/config.php
 #tools
 cushitic/deplocal.sh
 cushitic/depremote.sh
+.DS_Store
