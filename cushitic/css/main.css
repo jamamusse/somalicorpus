@@ -534,11 +534,13 @@ FOOTER
 #box_lemma .bar {
     font-size: 0.8em;
     font-style: italic;
+    text-align: left;    
 }
 
 #box_lemma .def {
     margin-left: 10px;
     font-size: 0.8em;
+    text-align: left;    
 }
 
 #box_lemma .rule {

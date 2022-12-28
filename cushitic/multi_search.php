@@ -18,9 +18,9 @@ function getConceptsList(){
 
 function do_search($q, $target){
   global $conn, $translateLA;
-  $rows = "";
-  $i = 0;
-  $sql = "select language, word, meaning, category, def_dictionary from rsol_d_cushiticwords where word like '$q'";
+  $rows = ""; $languagesfound = "";
+  $i = 0; $lfound = 0;
+  $sql = "select language, word, meaning, category, def_dictionary from rsol_c_cushiticwords where word like '$q'";
   if ($conn){
      $res = $conn->query($sql);
      if ($conn->isResultSet($res)) {
@@ -31,6 +31,10 @@ function do_search($q, $target){
          $def = $sRow['def_dictionary'];
          $cat = $sRow['category'];
          $i ++;
+         if (!preg_match("/$l/", $languagesfound)){
+         	$lfound ++;
+         	$languagesfound .= "$l ";
+         }
          $rows .= "<div class=\"bar\">";
          $rows .= "<span class=\"lemma\">$l - " . ($m ? " $m - " : "") . "<a href=\"?op=wordanalize\">$w</a> ($cat)</span>";
          $rows .= "</div>";
@@ -40,7 +44,7 @@ function do_search($q, $target){
      }
   }
   $result = "<div id=\"box_lemma\">";
-  $result .= "<div class=\"lemmabar\">" . ($i > 0 ? "$i items found" : "$q not found in $target") . "</div>";
+  $result .= "<div class=\"lemmabar\">" . ($i > 0 ? "$i items found in $lfound language(s) - $languagesfound" : "$q not found in $target") . "</div>";
   $result .= "$rows";
   $result .= "</div>";
 

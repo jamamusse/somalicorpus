@@ -1,5 +1,5 @@
 <?php
-function add_this($word, $cat, $def){
+function add_this($language, $word, $cat, $def){
    global $conn;
    $res = "adding $word";
    list($word, $m) = preg_split('/-/', $word, 2);
@@ -14,7 +14,7 @@ function add_this($word, $cat, $def){
    $sql = "INSERT INTO `rsol_d_cushiticwords` 
 (`recno`, `word`, `language`, `english`, `def_dictionary`, `def_english`, `source`, `category`, `base`, `weight`, `meaning`, `srcfile`, `expanded`)
 VALUES 
-(NULL, '$word', 'ba', '$def', '$def', '$def', 'JMJ2022Somalicorpus', '$cat', '$word', '0', '$meaning', '$sourcefile', 0);";
+(NULL, '$word', '$language', '$def', '$def', '$def', 'JMJ2022Somalicorpus', '$cat', '$word', '0', '$meaning', '$sourcefile', 0);";
 
    $res = $conn->query ($sql);
    if ($conn->isResultSet ($res)) {
@@ -25,21 +25,21 @@ VALUES
    return $res;
 }
 
-function do_check(){
+function do_check($language, $filein){
   global $conn;
   $suspend = 1;
   if($suspend){
-   $result = 'Suspended this operation - already uploaded the Bayso dictionary';
+   $result = 'Suspended this operation - already uploaded the $language dictionary';
   } else {
   	$result = "";
-	$handle = fopen("data/wordlist.txt", "r");
+	$handle = fopen($filein, "r");
   	if ($handle) {
         	//first clean
         	$result = "Starting to clean<br/>";
-        	$sql = "delete * from rsol_d_cushiticwords where language = 'ba'";
+        	$sql = "delete * from rsol_c_cushiticwords where language = '$language'";
         	$res = $conn->query ($sql);
         	if ($conn->isResultSet ($res)) {
-           	  $result .= "Cleaning done<br/>";
+           	  $result .= "Cleaning $language done<br/>";
         	}
         	$i = 0;
         	$names = 0; $verbs = 0; $adjs  = 0; $advs   = 0;
@@ -49,9 +49,9 @@ function do_check(){
     		while (($line = fgets($handle)) !== false) {
     	    		$i++; $to_add = 1;
        	    		list($a, $b, $c) = preg_split('/ /', $line, 3);
-	    		if (preg_match('/_/', $a)){
-      	        		$a = preg_replace('/_/', ' ', $a);
-	    		}
+					if (preg_match('/_/', $a)){
+							$a = preg_replace('/_/', ' ', $a);
+					}
             		if ($b == 'n'){
                 	  $names ++;
             		} elseif ($b == 'v'){
@@ -89,7 +89,7 @@ function do_check(){
                 	  $to_add = 0;
             		}
             		if ($to_add){
-             		  $result .= add_this($a, $b, $c) . "<br/>";
+             		  $result .= add_this($language, $a, $b, $c) . "<br/>";
             		}
        		}
        		$total = $names + $verbs + $advs + $adjs + $conjs + $noms + $pros + $pops + $dems + $amhs + $korma + $cars + $adpop + $nadjs + $nadvs + $relpro;
