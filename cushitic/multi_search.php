@@ -20,7 +20,7 @@ function do_search($q, $target){
   global $conn, $translateLA;
   $rows = ""; $languagesfound = "";
   $i = 0; $lfound = 0;
-  $sql = "select language, word, meaning, category, def_dictionary from rsol_c_cushiticwords where word like '$q'";
+  $sql = "select language, word, meaning, pos, def_dictionary from rsol_c_cushiticwords where word like '$q'";
   if ($conn){
      $res = $conn->query($sql);
      if ($conn->isResultSet($res)) {
@@ -29,14 +29,14 @@ function do_search($q, $target){
          $w   = $sRow['word'];
          $m   = $sRow['meaning'];
          $def = $sRow['def_dictionary'];
-         $cat = $sRow['category'];
+         $pos = $sRow['pos'];
          $i ++;
          if (!preg_match("/$l/", $languagesfound)){
          	$lfound ++;
          	$languagesfound .= "$l ";
          }
          $rows .= "<div class=\"bar\">";
-         $rows .= "<span class=\"lemma\">$l - " . ($m ? " $m - " : "") . "<a href=\"?op=wordanalize\">$w</a> ($cat)</span>";
+         $rows .= "<span class=\"lemma\">$l - " . ($m ? " $m - " : "") . "<a href=\"?op=wordanalize\">$w</a> ($pos)</span>";
          $rows .= "</div>";
          $rows .= "<div class=\"def\">$def</div>";
          $rows .= "<br/>";

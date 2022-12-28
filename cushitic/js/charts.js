@@ -94,10 +94,10 @@ const dataSource = {
           width: "160",
           height: "40"
         },
-	{
+        {
           id: "04.2.2",
           label: "Omo-Tana<br/>(7,156,000 words)",
-	  color: "FE3233",
+	      color: "FE3233",
           x: "57",
           y: "530",
           shape: "rectangle",
@@ -107,7 +107,7 @@ const dataSource = {
         {
           id: "04.2.3",
           label: "Saho/Afar<br/>(250,000 words)",
-	  color: "FE3233",
+	      color: "FE3233",
           x: "73",
           y: "530",
           shape: "rectangle",
@@ -142,21 +142,21 @@ const dataSource = {
           width: "160",
           height: "40"
         },
-	{
+        {
           id: "04.2.2.1.1",
-	  color: "FE3233",
+	  	  color: "FE3233",
           label: "Soomaali<br/>(7,283,666 words)",
           x: "6",
           y: "100",
           shape: "rectangle",
           width: "140",
           height: "40",
-	  link: "n-http://www.somalicorpus.com"
+	      link: "n-http://www.somalicorpus.com"
         },
-	{
+        {
           id: "04.2.2.1.2",
           label: "Rendille<br/>(205 words)",
-	  color: "FE3233",
+	  	  color: "FE3233",
           x: "19",
           y: "100",
           shape: "rectangle",
@@ -164,9 +164,9 @@ const dataSource = {
           height: "40",
           link: "n-http://www.somalicorpus.com/bayso"
         },
-	{
+        {
           id: "04.2.2.1.3",
-	  color: "FE3233",
+	  	  color: "FE3233",
           label: "Maay<br/>(1500 words)",
           x: "31",
           y: "100",
@@ -174,9 +174,9 @@ const dataSource = {
           width: "140",
           height: "40"
         },
-	{
+        {
           id: "04.2.2.1.4",
-	  color: "FE3233",
+	  	  color: "FE3233",
           label: "Boni<br/>(73 words)",
           x: "43",
           y: "100",
@@ -184,9 +184,9 @@ const dataSource = {
           width: "140",
           height: "40"
         },
-	{
+        {
           id: "04.2.2.2.1",
-	  color: "FE3233",
+	  	  color: "FE3233",
           label: "Bayso<br/>(1000 words)",
           x: "57",
           y: "100",
@@ -196,7 +196,7 @@ const dataSource = {
         },
         {
           id: "04.2.2.3.1",
-	  color: "FE3233",
+	  	  color: "FE3233",
           label: "Arbore<br/>(500 words)",
           x: "72",
           y: "100",
@@ -206,7 +206,7 @@ const dataSource = {
         },
         {
           id: "04.2.2.3.2",
-	  color: "FE3233",
+	  	  color: "FE3233",
           label: "El Molo<br/>(300 words)",
           x: "84",
           y: "100",
@@ -216,7 +216,7 @@ const dataSource = {
         },
         {
           id: "04.2.2.3.3",
-	  color: "FE3233",
+	  	  color: "FE3233",
           label: "Dasanech<br/>(1500 words)",
           x: "95",
           y: "100",
