@@ -1,6 +1,6 @@
 <?php
  define('APP_DIR', './');
- define('INCLUDES_DIR', '../includes/');
+ define('INCLUDES_DIR', 'includes/');
  define('_TITLE_IN_HEAD', 'Cushitic Language Family Corpora');
  define('_INSERT_A_WORD', 'Insert a cushitic word');
  include(APP_DIR . "config.php");
@@ -106,7 +106,7 @@ $(document).ready(function() {
 	var data = {items: [
 {value: "21", name: "JMJ"}
 ]};
- $("input[type=texta]").autoSuggest("../suggestclemma.php", {asHtmlID: "q", selectedValuesProp: "name", selectedItemProp: "name", searchObjProps: "name", startText: "Geli halkan ereyga"});
+ $("input[type=texta]").autoSuggest("../suggestclemma.php", {asHtmlID: "q", selectedValuesProp: "name", selectedItemProp: "name", searchObjProps: "name", startText: "Insert a Cushitic word here"});
  
 });
 	
@@ -122,21 +122,22 @@ $(document).ready(function() {
 <body>
 <!--h1>Welcome to Cushitic Language Family Corpora</h1-->
 <div id="loginDiv">
-<?php
- if($op != 'search'){
-   echo "<div id=\"chart-container\"></div>";
- }
-?>
      <form method="get" action="index.php">
          <input type="hidden" name="op" value="search" />  
          <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
-	 <input type="submit" value="search on" />
-         <strong>OmoTana Family and Saho Corpora: over 7.3 million Lowland East Cushitic words</strong>
-	 <input class="inputtext" type="texta" name="q" value=""/>
+	 	 <input type="submit" value="search on" />
+         <strong>Omo-Tana Family and Saho Corpora: over 7.3 million Lowland East Cushitic words or</strong>
+	 	 <input type="button" value="browse concepts" />
+	     <input class="inputtext" type="texta" name="q" value=""/>
      </form>
 </div>
 <div id="restult_table">
 <?php echo $result; ?>
 </div>
+<?php
+ if($op != 'search'){
+   echo "<div id=\"chart-container\"></div>";
+ }
+?>
 </body>
 </html>
