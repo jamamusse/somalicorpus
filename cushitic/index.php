@@ -4,6 +4,21 @@
  define('_TITLE_IN_HEAD', 'Cushitic Language Family Corpora');
  define('_INSERT_A_WORD', 'Insert a cushitic word');
  include(APP_DIR . "config.php");
+ function getConceptsList(){
+    global $conn;
+    $ret = "no concepts ready";
+    $sql = "SELECT * FROM rsol_c_concept ORDER BY weight DESC LIMIT 5";
+	$res = $conn->query ($sql);
+	if ($conn->isResultSet ($res)) {
+			$ret = "";
+			while ($sRow =  $conn->fetchAssoc($res)){
+				$ret .= "<button onclick=\"showConcept('marriage'); return false;\">marriage</button>";
+			}
+	} else {
+		$ret = "Error in $sql - " . $conn->error();
+	}
+ 	return $ret;
+ }
  if (!isset($op)){
    $op = 'login';
  }
@@ -43,11 +58,7 @@
 <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="css/main.css">
 <title><?php echo _TITLE_IN_HEAD; ?></title>
 
-<!-- TinyMCE -->
-<script type="text/javascript" src="includes/mine.js"></script>
 <script type="text/javascript" src="includes/jquery-1.7.js"></script>
-<script src="includes/jquery.imagemapster.js"></script>
-<script src="includes/jquery.webcam.js"></script>
 <script type="text/javascript" src="includes/jfusion/fusioncharts.js"></script>
 <script type="text/javascript" src="includes/jfusion/themes/fusioncharts.theme.fint.js"></script>
 
@@ -113,6 +124,7 @@ $(document).ready(function() {
 });
 </script>
 
+<script type="text/javascript" src="js/mine.js"></script>
 <script type="text/javascript" src="js/charts.js"></script>
 
 <script type="text/javascript" src="includes/jquery.autoSuggest.packed.js"></script>
@@ -127,7 +139,8 @@ $(document).ready(function() {
          <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
 	 	 <input type="submit" value="search on" />
          <strong>Omo-Tana Family and Saho Corpora: over 7.3 million Lowland East Cushitic words or</strong>
-	 	 <input type="button" value="browse concepts" />
+	     <button onclick="showConcept('all'); return false;">browse concepts</button>
+	 	 <strong><i>like: </i></strong><?php echo getConceptsList(); ?> 
 	     <input class="inputtext" type="texta" name="q" value=""/>
      </form>
 </div>
