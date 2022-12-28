@@ -5,6 +5,7 @@
  define('_INSERT_A_WORD', 'Insert a cushitic word');
  include(APP_DIR . "config.php");
  include(APP_DIR . "multi_search.php");
+ include(APP_DIR . "check_languages.php");
 
  if (!isset($op)){
    $op = 'login';
@@ -31,9 +32,29 @@
 	  $result = "<br/>";
 	  $result .= do_search($q, $target) . "<br/>";
 	  break;
+	case 'wordanalize':
+   	  $result = "Coming soon!";
+	  break;	  
+	case 'up_boni':
+   	  $result = do_check('bo', 'data/2022-RCF_Boni-Wordlist-v1.3.csv');
+	  break;
 	case 'up_bayso':
-   	  include_once('check_bayso.php');
-   	  $result = do_check();
+   	  $result = do_check('ba', 'data/2022-RCF_Bayso-Wordlist-v1.3.csv');
+	  break;
+	case 'up_rendille':
+   	  $result = do_check('re', 'data/2022-RCF_Rendille-Wordlist-v1.3.csv');
+	  break;
+	case 'up_dasanach':
+   	  $result = do_check('da', 'data/2022-RCF_Dasanach-Wordlist-v1.3.csv');
+	  break;
+	case 'up_maay':
+   	  $result = do_check('ma', 'data/2022-RCF_Maay-Wordlist-v1.3.csv');
+	  break;
+	case 'up_elmolo':
+   	  $result = do_check('el', 'data/2022-RCF_ElMolo-Wordlist-v1.3.csv');
+	  break;
+	case 'up_arbore':
+   	  $result = do_check('ar', 'data/2022-RCF_Arbore-Wordlist-v1.3.csv');
 	  break;
 	default:
 	  $result = "$op not recognized";
@@ -82,7 +103,7 @@ $(document).ready(function() {
 	 	 <input type="submit" value="search on" />
          <strong>Omo-Tana Family and Saho Corpora: over 7.3 million Lowland East Cushitic words or</strong>
 	     <button onclick="showConcept('all'); return false;">browse concepts</button>
-	 	 <strong><i>like: </i></strong><?php echo getConceptsList(); ?> 
+	 	 <strong><i>like: </i></strong><?php echo getConceptsList(); ?> &#8921;&#8921;<strong><a href=".">Home</a></strong>
 	     <input class="inputtext" type="texta" name="q" value=""/>
      </form>
 </div>

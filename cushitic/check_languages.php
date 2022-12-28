@@ -1,44 +1,47 @@
 <?php
-function add_this($language, $word, $cat, $def){
-   global $conn;
-   $res = "adding $word";
-   list($word, $m) = preg_split('/-/', $word, 2);
-   $meaning = ($m ? $m : 0);
-
-   $sql = "$word, $meaning, $cat, $def";
+function add_this($language, $word, $pos, $fon, $def, $en){
+   global $conn, $translateLA;
+   $result = "adding $word in $translateLA[$language] with $pos [$fon]";
+   if (preg_match('/_/', $word)){
+	   list($word, $m) = preg_split('/_/', $word, 2);
+	   $meaning = ($m ? $m : 0);
+   } else {
+	   $meaning = 0;
+   }
+   $sql = "$word, $meaning, $pos, $def";
    $word = addslashes($word);
-   $cat  = addslashes($cat);
+   $pos  = addslashes($pos);
    $def  = addslashes($def);
-   $seealso = addslashes($seealso);
 
-   $sql = "INSERT INTO `rsol_d_cushiticwords` 
-(`recno`, `word`, `language`, `english`, `def_dictionary`, `def_english`, `source`, `category`, `base`, `weight`, `meaning`, `srcfile`, `expanded`)
-VALUES 
-(NULL, '$word', '$language', '$def', '$def', '$def', 'JMJ2022Somalicorpus', '$cat', '$word', '0', '$meaning', '$sourcefile', 0);";
+   $sql = "INSERT INTO `rsol_c_cushiticwords` 
+	(`recno`, `word`, `language`, `phonetic`, `pos`, `english`, `def_dictionary`, `meaning`)
+	VALUES 
+	(NULL,  '$word', '$language', '$fon', '$pos',  '$en', '$def', '$meaning');";
 
    $res = $conn->query ($sql);
-   if ($conn->isResultSet ($res)) {
+   if (!$conn->error()) {
       $result .= "Added: " . mb_convert_encoding($sql, "HTML-ENTITIES", "UTF-8") . "<br/>";
    } else {
-      $res = "<font color=\"red\">Failed</font>: ". mb_convert_encoding($sql, "HTML-ENTITIES", "UTF-8") . "<br/>";
+      $result .= "<font color=\"red\">Failed</font>: ". mb_convert_encoding($sql, "HTML-ENTITIES", "UTF-8") . "<br/>";
    }
-   return $res;
+   return $result;
 }
 
 function do_check($language, $filein){
   global $conn;
-  $suspend = 1;
+  $suspend = 0;
+  $result = "Checking $filein for $language<br/>";
   if($suspend){
-   $result = 'Suspended this operation - already uploaded the $language dictionary';
+    $result .= "Suspended this operation - already uploaded the $language dictionary";
   } else {
   	$result = "";
 	$handle = fopen($filein, "r");
   	if ($handle) {
         	//first clean
-        	$result = "Starting to clean<br/>";
-        	$sql = "delete * from rsol_c_cushiticwords where language = '$language'";
+        	$result .= "Starting to clean<br/>";
+        	$sql = "DELETE from rsol_c_cushiticwords where language = '$language'";
         	$res = $conn->query ($sql);
-        	if ($conn->isResultSet ($res)) {
+        	if (!$conn->error()) {
            	  $result .= "Cleaning $language done<br/>";
         	}
         	$i = 0;
@@ -46,12 +49,12 @@ function do_check($language, $filein){
         	$noms  = 0; $conjs = 0; $pros  = 0; $nadjs  = 0;
         	$pops  = 0; $dems  = 0; $cars  = 0; $nadvs  = 0;
         	$amhs  = 0; $korma = 0; $adpop = 0; $relpro = 0;
+        	$negs  = 0;
+        	// skip the first line
+        	$line = fgets($handle);
     		while (($line = fgets($handle)) !== false) {
     	    		$i++; $to_add = 1;
-       	    		list($a, $b, $c) = preg_split('/ /', $line, 3);
-					if (preg_match('/_/', $a)){
-							$a = preg_replace('/_/', ' ', $a);
-					}
+       	    		list($a, $b, $fon, $d, $e, $english, $notes) = preg_split('/,/', $line, 7);
             		if ($b == 'n'){
                 	  $names ++;
             		} elseif ($b == 'v'){
@@ -84,12 +87,15 @@ function do_check($language, $filein){
                 	  $relpro ++;
             		} elseif ($b == 'n/adv'){
                 	  $nadvs ++;
+            		} elseif ($b == 'neg'){
+                	  $negs ++;                	  
             		} else {
                 	  $result .= "$i: found unknown: $b<br/>";
                 	  $to_add = 0;
             		}
             		if ($to_add){
-             		  $result .= add_this($language, $a, $b, $c) . "<br/>";
+            		  $def = ($d ? "SOM=$d " : "") . ($e ? "REL=$e" : "") . ($notes ? "NOTES=$notes" : "");
+             		  $result .= add_this($language, $a, $b, $fon, $def, $english) . "<br/>";
             		}
        		}
        		$total = $names + $verbs + $advs + $adjs + $conjs + $noms + $pros + $pops + $dems + $amhs + $korma + $cars + $adpop + $nadjs + $nadvs + $relpro;
@@ -110,6 +116,7 @@ function do_check($language, $filein){
        		$result .= "N/Adjs:  $nadjs<br/>";
        		$result .= "N/Advs:  $nadvs<br/>";
        		$result .= "N/Advs:  $relpro<br/>";
+       		$result .= "negs:    $negs<br/>";
        		$result .= "Total: $total [$i]<br/>";
   	} else {
     		$result = 'Failed to open';

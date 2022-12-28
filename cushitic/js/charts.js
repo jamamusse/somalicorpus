@@ -155,7 +155,7 @@ const dataSource = {
         },
 	{
           id: "04.2.2.1.2",
-          label: "Rendille<br/>(4,004 words)",
+          label: "Rendille<br/>(205 words)",
 	  color: "FE3233",
           x: "19",
           y: "100",
@@ -177,7 +177,7 @@ const dataSource = {
 	{
           id: "04.2.2.1.4",
 	  color: "FE3233",
-          label: "Boni<br/>(500 words)",
+          label: "Boni<br/>(73 words)",
           x: "43",
           y: "100",
           shape: "rectangle",
