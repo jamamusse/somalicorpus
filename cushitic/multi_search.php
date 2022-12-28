@@ -1,15 +1,31 @@
 <?php
 
+function getConceptsList(){
+	global $conn;
+	$ret = "no concepts ready";
+	$sql = "SELECT concept FROM rsol_c_concept ORDER BY weight DESC LIMIT 5";
+	$res = $conn->query ($sql);
+	if ($conn->isResultSet ($res)) {
+			$ret = "";
+			while ($sRow =  $conn->fetchAssoc($res)){
+				$ret .= "<button onclick=\"showConcept('" . $sRow['concept'] . "'); return false;\">" . $sRow['concept'] . "</button> ";
+			}
+	} else {
+		$ret = "Error";
+	}
+	return $ret;
+}
+
 function do_search($q, $target){
   global $conn, $translateLA;
+  $rows = "";
   $i = 0;
   $sql = "select language, word, meaning, category, def_dictionary from rsol_d_cushiticwords where word like '$q'";
   if ($conn){
      $res = $conn->query($sql);
      if ($conn->isResultSet($res)) {
-        $rows = "";
         while ($sRow =  $conn->fetchAssoc($res)){
-         $l   = ($sRow['language'] ? $translateLA{$sRow['language']} : $translateLA{'UNKNOWN'});
+         $l   = ($sRow['language'] ? $translateLA[$sRow['language']] : $translateLA['UNKNOWN']);
          $w   = $sRow['word'];
          $m   = $sRow['meaning'];
          $def = $sRow['def_dictionary'];
@@ -23,7 +39,7 @@ function do_search($q, $target){
        }
      }
   }
-  $result .= "<div id=\"box_lemma\">";
+  $result = "<div id=\"box_lemma\">";
   $result .= "<div class=\"lemmabar\">" . ($i > 0 ? "$i items found" : "$q not found in $target") . "</div>";
   $result .= "$rows";
   $result .= "</div>";

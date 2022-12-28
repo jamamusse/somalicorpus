@@ -146,8 +146,7 @@ class SQL {
 
 				return $queryResult;
 			} else if ($this->method == "mysql") {
-				$queryResult = @mysqli_query($queryText, $this->conn);
-
+				$queryResult = @mysqli_query($this->conn, $queryText);
 				if (!$queryResult) {
 					$this->errorMessage = @mysqli_error();
 				}
