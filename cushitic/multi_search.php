@@ -20,7 +20,7 @@ function do_search($q, $target){
   global $conn, $translateLA;
   $rows = ""; $languagesfound = "";
   $i = 0; $lfound = 0;
-  $sql = "select language, word, meaning, pos, def_dictionary from rsol_c_cushiticwords where word like '$q'";
+  $sql = "select language, word, meaning, pos, def_dictionary, english from rsol_c_cushiticwords where word like '$q'";
   if ($conn){
      $res = $conn->query($sql);
      if ($conn->isResultSet($res)) {
@@ -30,15 +30,16 @@ function do_search($q, $target){
          $m   = $sRow['meaning'];
          $def = $sRow['def_dictionary'];
          $pos = $sRow['pos'];
+         $en  = $sRow['english'];
          $i ++;
          if (!preg_match("/$l/", $languagesfound)){
          	$lfound ++;
-         	$languagesfound .= "$l ";
+         	$languagesfound .= ($languagesfound ? ", " : "") . $l;
          }
          $rows .= "<div class=\"bar\">";
          $rows .= "<span class=\"lemma\">$l - " . ($m ? " $m - " : "") . "<a href=\"?op=wordanalize\">$w</a> ($pos)</span>";
          $rows .= "</div>";
-         $rows .= "<div class=\"def\">$def</div>";
+         $rows .= "<div class=\"def\">$def " . ($en ? "English: $en" : "") . "</div>";
          $rows .= "<br/>";
        }
      }

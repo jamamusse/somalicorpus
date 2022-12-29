@@ -1,6 +1,6 @@
 <?php
 function add_this($language, $word, $pos, $fon, $def, $en){
-   global $conn, $translateLA;
+   global $conn, $translateLA, $verbose;
    $result = "adding $word in $translateLA[$language] with $pos [$fon]";
    if (preg_match('/_/', $word)){
 	   list($word, $m) = preg_split('/_/', $word, 2);
@@ -24,7 +24,7 @@ function add_this($language, $word, $pos, $fon, $def, $en){
    } else {
       $result .= "<font color=\"red\">Failed</font>: ". mb_convert_encoding($sql, "HTML-ENTITIES", "UTF-8") . "<br/>";
    }
-   return $result;
+   return ($verbose ? $result : "");
 }
 
 function do_check($language, $filein){
@@ -49,13 +49,16 @@ function do_check($language, $filein){
         	$noms  = 0; $conjs = 0; $pros  = 0; $nadjs  = 0;
         	$pops  = 0; $dems  = 0; $cars  = 0; $nadvs  = 0;
         	$amhs  = 0; $korma = 0; $adpop = 0; $relpro = 0;
-        	$negs  = 0;
+        	$negs  = 0; $checks = 0;
         	// skip the first line
         	$line = fgets($handle);
     		while (($line = fgets($handle)) !== false) {
     	    		$i++; $to_add = 1;
        	    		list($a, $b, $fon, $d, $e, $english, $notes) = preg_split('/,/', $line, 7);
-            		if ($b == 'n'){
+            		if ($b == ''){
+                	  $checks ++;
+                	  $b = 'tobechecked';
+            		} elseif ($b == 'n'){
                 	  $names ++;
             		} elseif ($b == 'v'){
                   	  $verbs ++;
@@ -95,11 +98,12 @@ function do_check($language, $filein){
             		}
             		if ($to_add){
             		  $def = ($d ? "SOM=$d " : "") . ($e ? "REL=$e" : "") . ($notes ? "NOTES=$notes" : "");
-             		  $result .= add_this($language, $a, $b, $fon, $def, $english) . "<br/>";
+             		  $result .= add_this($language, $a, $b, $fon, $def, $english);
             		}
        		}
        		$total = $names + $verbs + $advs + $adjs + $conjs + $noms + $pros + $pops + $dems + $amhs + $korma + $cars + $adpop + $nadjs + $nadvs + $relpro;
        		fclose($handle);
+       		$result .= "to be set:   $checks<br/>";
        		$result .= "Names:   $names<br/>";
        		$result .= "Verbs:   $verbs<br/>";
        		$result .= "Advs:    $advs<br/>";
