@@ -17,7 +17,7 @@ function getConceptsList(){
 }
 
 function do_search($q, $target){
-  global $conn, $translateLA;
+  global $conn, $translateLA, $concepts;
   $rows = ""; $languagesfound = "";
   $i = 0; $lfound = 0;
   $sql = "select language, word, meaning, pos, def_dictionary, english from rsol_c_cushiticwords where word like '$q'";
@@ -48,6 +48,14 @@ function do_search($q, $target){
   $result .= "<div class=\"lemmabar\">" . ($i > 0 ? "$i items found in $lfound language(s) - $languagesfound" : "$q not found in $target") . "</div>";
   $result .= "$rows";
   $result .= "</div>";
+  //test
+  $concepts = "<div id=\"onto-chart-container\"></div>";
+  if($concepts){
+	  $result .= "<div id=\"box_ethmology\">";
+	  $result .= "<div class=\"ethmobar\">" . "Concepts" . "</div>";
+	  $result .= "$concepts";
+	  $result .= "</div>";
+  }
 
   return $result;
 }
