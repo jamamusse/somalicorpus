@@ -83,16 +83,14 @@ function describeConcept(concept, cId){
   			   '</div>' +
   			   '<div class="def">' + concept + '</div>';
 
-    var vNode = document.getElementById(cId);
-	vNode.style.background-color="#f44336;";
-
-alert (vNode);
+    var vNode = document.getElementById(cId);//.style.backgroundColor = "#f44336;";
+	vNode.style.backgroundColor = "red";
 	
-// 	if (lastConcept != null){
-// 		vNode = document.getElementById(lastConcept);
-// 		vNode.style.backgroundColor="buttonface"; 
-// 	}
-//     lastConcept = cId;
+ 	if (lastConcept != null){
+ 		vNode = document.getElementById(lastConcept);
+ 		vNode.style.backgroundColor="buttonface"; 
+ 	}
+    lastConcept = cId;
   		
 	return desc;
 }
@@ -118,11 +116,11 @@ function showConcept(concept, cId) {
 }
 
 function goConcept(concept, cId) {
+	lastConcept = cId;
 	document.getElementById("op").value = 'showConcept';
 	document.getElementById("concept").value = concept;
 	document.getElementById("form_search").submit();
 	
-	lastConcept = cId;
 }
 /* END 2023 development */
 

@@ -8,7 +8,7 @@ function getConceptsListMenu(){
 	if ($conn->isResultSet ($res)) {
 			$ret = "";
 			while ($sRow =  $conn->fetchAssoc($res)){
-				$ret .= "<button id=\"" . $sRow['concode'] . "\" onclick=\"goConcept('" . $sRow['concept'] . "', '" . $sRow['concode'] . "'); return false;\">" . $sRow['concept'] . "</button> ";
+				$ret .= "<button onclick=\"goConcept('" . $sRow['concept'] . "', '" . $sRow['concode'] . "'); return false;\">" . $sRow['concept'] . "</button> ";
 			}
 	} else {
 		$ret = "Error";
@@ -24,7 +24,7 @@ function getConceptsList($concept){
 	if ($conn->isResultSet ($res)) {
 			$ret = "";
 			while ($sRow =  $conn->fetchAssoc($res)){
-				$curr = ($sRow['concept'] == $concept? "style=\"background-color: #f44336;\"" : "style=\"background-color: green\"");
+				$curr = ($sRow['concept'] == $concept? "style=\"background-color: #f44336;\"" : "style=\"background-color: buttonface\"");
 				$ret .= "<button id=\"" . $sRow['concode'] . "\" $curr onclick=\"showConcept('" . $sRow['concept'] . "', '" . $sRow['concode'] . "'); return false;\">" . $sRow['concept'] . "</button> ";
 			}
 	} else {
