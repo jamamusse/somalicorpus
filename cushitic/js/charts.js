@@ -1,6 +1,6 @@
-dataSource = {
+const dataSource = {
   chart: {
-    caption: "",
+    caption: "Concepts",
     theme: "fusion",
     viewmode: "1",
     showrestorebtn: "0",

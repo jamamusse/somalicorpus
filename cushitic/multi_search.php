@@ -3,12 +3,12 @@
 function getConceptsListMenu(){
 	global $conn;
 	$ret = "no concepts ready";
-	$sql = "SELECT concept FROM rsol_c_concept where concept <> 'Concepts' ORDER BY weight DESC LIMIT 2";
+	$sql = "SELECT concode, concept FROM rsol_c_concept where concept <> 'Concepts' ORDER BY weight DESC LIMIT 2";
 	$res = $conn->query ($sql);
 	if ($conn->isResultSet ($res)) {
 			$ret = "";
 			while ($sRow =  $conn->fetchAssoc($res)){
-				$ret .= "<button onclick=\"goConcept('" . $sRow['concept'] . "'); return false;\">" . $sRow['concept'] . "</button> ";
+				$ret .= "<button id=\"" . $sRow['concode'] . "\" onclick=\"goConcept('" . $sRow['concept'] . "', '" . $sRow['concode'] . "'); return false;\">" . $sRow['concept'] . "</button> ";
 			}
 	} else {
 		$ret = "Error";
@@ -24,7 +24,7 @@ function getConceptsList($concept){
 	if ($conn->isResultSet ($res)) {
 			$ret = "";
 			while ($sRow =  $conn->fetchAssoc($res)){
-				$curr = ($sRow['concept'] == $concept? "style=\"background-color: #f44336;\"" : "");
+				$curr = ($sRow['concept'] == $concept? "style=\"background-color: #f44336;\"" : "style=\"background-color: green\"");
 				$ret .= "<button id=\"" . $sRow['concode'] . "\" $curr onclick=\"showConcept('" . $sRow['concept'] . "', '" . $sRow['concode'] . "'); return false;\">" . $sRow['concept'] . "</button> ";
 			}
 	} else {

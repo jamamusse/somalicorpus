@@ -13,7 +13,7 @@ var lastConcept = null;
  * this is for Cushitic Corpus - Omo-Tana family - functions
  */
  function getDSForConcept(concept){
- 	const dataSource = {
+ 	const d = {
   chart: {
     caption: "Concept identified: " + concept,
     xaxisminvalue:   "0",
@@ -74,7 +74,7 @@ var lastConcept = null;
   ]
 };	
  	
- 	return dataSource; 
+ 	return d; 
 }
  
 function describeConcept(concept, cId){
@@ -84,14 +84,16 @@ function describeConcept(concept, cId){
   			   '<div class="def">' + concept + '</div>';
 
     var vNode = document.getElementById(cId);
-	vNode.style.backgroundColor="#f44336;";
+	vNode.style.background-color="#f44336;";
+
+alert (vNode);
+	
 // 	if (lastConcept != null){
 // 		vNode = document.getElementById(lastConcept);
 // 		vNode.style.backgroundColor="buttonface"; 
 // 	}
 //     lastConcept = cId;
   		
-  		alert(desc);		 		  
 	return desc;
 }
 
@@ -115,10 +117,12 @@ function showConcept(concept, cId) {
 	return false;
 }
 
-function goConcept(concept) {
+function goConcept(concept, cId) {
 	document.getElementById("op").value = 'showConcept';
 	document.getElementById("concept").value = concept;
 	document.getElementById("form_search").submit();
+	
+	lastConcept = cId;
 }
 /* END 2023 development */
 
