@@ -1,4 +1,4 @@
-const dataSource = {
+dataSource = {
   chart: {
     caption: "",
     theme: "fusion",
@@ -106,8 +106,7 @@ const dataSource = {
         },
         {
           id: "04.2.3",
-          label: "Saho/Afar<br/>(250,000 words)",
-	      color: "FE3233",
+          label: "Saho/Afar",
           x: "73",
           y: "530",
           shape: "rectangle",

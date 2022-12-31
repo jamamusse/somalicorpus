@@ -29,9 +29,11 @@
         $target='so';	      
 	  }
       $q = preg_replace ( '/\,/', '', trim ( $q ) );
-	  $result = "<br/>";
-	  $result .= do_search($q, $target) . "<br/>";
+	  $result = do_search($q, $target) . "<br/>";
 	  break;
+	case 'showConcept':
+   	  $result = do_showConcept($concept);
+	  break;	  
 	case 'wordanalize':
    	  $result = "Coming soon!";
 	  break;	  
@@ -76,7 +78,7 @@
 <script type="text/javascript">
 const dataSource = {
   chart: {
-    caption: "Concepts idenfified",
+    caption: "Concepts idenfified: all",
     xaxisminvalue:   "0",
     xaxismaxvalue:   "100",
     yaxisminvalue:   "0",
@@ -139,7 +141,8 @@ const dataSource = {
           imagenode: "1",
           imagealign: "MIDDLE",
           imageheight: "30",
-          imagewidth: "40"
+          imagewidth: "40",
+          imageurl: "images/body.jpg"
         },
         {
           id: "N4",
@@ -234,8 +237,7 @@ const dataSource = {
           imagenode: "1",
           imagealign: "MIDDLE",
           imageheight: "30",
-          imagewidth: "40",
-          imageurl: "https://s8.postimg.cc/3qz87kmut/electronics.png"
+          imagewidth: "40"
         }
       ]
     }
@@ -329,332 +331,6 @@ const dataSource = {
   ]
 };
         
-const dataSource1 = {
-  chart: {
-    caption: "Concepts idenfified",
-    xaxisminvalue:   "0",
-    xaxismaxvalue:   "100",
-    yaxisminvalue:   "0",
-    yaxismaxvalue:   "100",
-    theme:           "candy",
-    basefontsize:    "11",
-    plothovereffect: "0"
-  },
-  dataset: [
-    {
-      data: [
-        {
-          id: "isp",
-          x: "80",
-          y: "83",
-          alpha: "0",
-          name: "ISP",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "50",
-          imagewidth: "50",
-          imageurl: "https://s8.postimg.cc/k0pea9uw5/globe.png"
-        },
-        {
-          id: "modem",
-          x: "55",
-          y: "83",
-          alpha: "0",
-          label: "Modem",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "30",
-          imagewidth: "40",
-          imageurl: "https://s8.postimg.cc/3qz87kmut/electronics.png"
-        },
-        {
-          id: "router",
-          x: "45",
-          y: "65",
-          alpha: "0",
-          name: "Master Router",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "40",
-          imagewidth: "50",
-          imageurl: "https://s8.postimg.cc/io7p89uut/router.png"
-        },
-        {
-          id: "subrouter1",
-          x: "20",
-          y: "55",
-          alpha: "0",
-          name: "Sub Router 1",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "40",
-          imagewidth: "50",
-          imageurl: "https://s8.postimg.cc/io7p89uut/router.png"
-        },
-        {
-          id: "subrouter2",
-          x: "75",
-          y: "45",
-          alpha: "0",
-          name: "Sub Router 2",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "40",
-          imagewidth: "50",
-          imageurl: "https://s8.postimg.cc/io7p89uut/router.png"
-        },
-        {
-          id: "subrouter3",
-          x: "40",
-          y: "45",
-          alpha: "0",
-          name: "Sub Router 3",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "40",
-          imagewidth: "50",
-          imageurl: "https://s8.postimg.cc/io7p89uut/router.png"
-        },
-        {
-          id: "desktop-srouter1",
-          x: "10",
-          y: "30",
-          alpha: "0",
-          name: "Public Desktop",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "40",
-          imagewidth: "50",
-          imageurl: "https://s8.postimg.cc/b9idg2911/multimedia.png"
-        },
-        {
-          id: "nas-srouter1",
-          x: "10",
-          y: "65",
-          alpha: "0",
-          name: "Network Storage",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "20",
-          imagewidth: "30",
-          imageurl: "https://s8.postimg.cc/mymd3sfcl/nas.png"
-        },
-        {
-          id: "mobile1-srouter2",
-          x: "65",
-          y: "20",
-          alpha: "0",
-          label: "Ronnie's Mobile",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "30",
-          imagewidth: "15",
-          imageurl: "https://s8.postimg.cc/ec4ebmm0l/image.png"
-        },
-        {
-          id: "mobile2-srouter2",
-          x: "90",
-          y: "25",
-          alpha: "0",
-          label: "Julliet's Mobile",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "30",
-          imagewidth: "15",
-          imageurl: "https://s8.postimg.cc/ec4ebmm0l/image.png"
-        },
-        {
-          id: "laptop1-srouter2",
-          x: "80",
-          y: "15",
-          alpha: "0",
-          name: "Romeo's Laptop",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "45",
-          imagewidth: "60",
-          imageurl: "https://s8.postimg.cc/qd94xq5at/new_laptop.png"
-        },
-        {
-          id: "st-srouter3",
-          x: "30",
-          y: "20",
-          alpha: "0",
-          name: "Smart TV",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "40",
-          imagewidth: "50",
-          imageurl: "https://s8.postimg.cc/wbmy7t3n9/image.png"
-        },
-        {
-          id: "desktop-srouter3",
-          x: "45",
-          y: "15",
-          alpha: "0",
-          name: "Amy's Desktop",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "40",
-          imagewidth: "50",
-          imageurl: "https://s8.postimg.cc/b9idg2911/multimedia.png"
-        },
-        {
-          id: "mobile-srouter3",
-          x: "55",
-          y: "35",
-          alpha: "0",
-          label: "Amy's Mobile",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "30",
-          imagewidth: "15",
-          imageurl: "https://s8.postimg.cc/ec4ebmm0l/image.png"
-        }
-      ]
-    }
-  ],
-  connectors: [
-    {
-      stdthickness: "2",
-      connector: [
-        {
-          from: "isp",
-          to: "modem",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "modem",
-          to: "router",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "router",
-          to: "subrouter1",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "router",
-          to: "subrouter2",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "router",
-          to: "subrouter3",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "subrouter1",
-          to: "desktop-srouter1",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "subrouter1",
-          to: "nas-srouter1",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "subrouter2",
-          to: "mobile1-srouter2",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "subrouter2",
-          to: "mobile2-srouter2",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "subrouter2",
-          to: "laptop1-srouter2",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "subrouter3",
-          to: "st-srouter3",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "subrouter3",
-          to: "desktop-srouter3",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        },
-        {
-          from: "subrouter3",
-          to: "mobile-srouter3",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        }
-      ]
-    }
-  ]
-};
-
 FusionCharts.ready(function() {
   var myChart = new FusionCharts({
     type: "dragnode",
@@ -692,25 +368,27 @@ $(document).ready(function() {
 <link rel="stylesheet" href="css/autoSuggest.css" type="text/css" media="screen" charset="utf-8" />
 </head>
 <body>
-<!--h1>Welcome to Cushitic Language Family Corpora</h1-->
-<div id="loginDiv">
-     <form method="post" action="index.php">
-         <input type="hidden" name="op" value="search" />  
-         <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
-	 	 <input type="submit" value="search on" />
-         <strong>Omo-Tana Family and Saho Corpora: over 7.3 million Lowland East Cushitic words or</strong>
-	     <button onclick="showConcept('all'); return false;">browse concepts</button>
-	 	 <strong><i>like: </i></strong><?php echo getConceptsList(); ?> &#8921;&#8921;<strong><a href=".">Home</a></strong>
-	     <input class="inputtext" type="texta" name="q" value=""/>
-     </form>
-</div>
-<div id="restult_table">
-<?php echo $result; ?>
-</div>
-<?php
- if($op != 'search'){
-   echo "<div id=\"chart-container\"></div>";
- }
-?>
+<div id="bodyContainer">
+	<div id="loginDiv">
+		 <form method="post" action="index.php" id="form_search">
+			 <input type="hidden" name="op" value="search" id="op" />
+			 <input type="hidden" name="concept" value="search" id="concept" />
+			 <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
+			 <input type="submit" value="search on" />
+			 <strong>Omo-Tana Family Corpus: over 7.3 million Lowland East Cushitic words or</strong>
+			 <button onclick="goConcept('Concepts'); return false;">browse concepts</button>
+			 <strong><i>like: </i></strong><?php echo getConceptsListMenu(); ?> &#8921;&#8921;<strong><a href=".">Home</a></strong>
+			 <input class="inputtext" type="texta" name="q" value=""/>
+		 </form>
+	</div>
+	<div id="restult_table">
+	<?php echo $result; ?>
+	</div>
+	<?php
+	 if($op != 'search'){
+	   echo "<div id=\"chart-container\"></div>";
+	 }
+	?>
+<div>
 </body>
 </html>
