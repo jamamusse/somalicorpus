@@ -4,6 +4,7 @@
  define('_TITLE_IN_HEAD', 'Cushitic Language Family Corpora');
  define('_INSERT_A_WORD', 'Insert a cushitic word');
  include(APP_DIR . "config.php");
+ include(APP_DIR . "concept.php");
  include(APP_DIR . "multi_search.php");
  include(APP_DIR . "check_languages.php");
 
@@ -69,6 +70,7 @@
 	  break;
  }
 ?>
+<html lang="<?php echo $lang; ?>">
 <html>
 <head>
 <meta name="robots" content="index,nofollow">
@@ -383,7 +385,9 @@ $(document).ready(function() {
 			 <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
 			 <input type="submit" value="search on" />
 			 <strong>Omo-Tana Family Corpus: over 7.3 million Lowland East Cushitic words or</strong>
-			 <button onclick="goConcept('Concepts'); return false;">browse concepts</button>
+			 <button onclick="goConcept('Concepts', 'N0'); return false;">browse concepts</button>
+
+			 
 			 <strong><i>like: </i></strong><?php echo getConceptsListMenu(); ?> &#8921;&#8921;<strong><a href=".">Home</a></strong>
 			 <input class="inputtext" type="texta" name="q" value=""/>
 		 </form>

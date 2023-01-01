@@ -111,7 +111,7 @@ function setOutputdConceptGraph() {
     if(httpObject.readyState == 4){
         if (httpObject.responseText){
 //            setInnerHTML('describeConcept', httpObject.responseText);
-            alert(httpObject.responseText);
+//            alert(httpObject.responseText);
         } else {
             setInnerHTML('onto-chart-container', 'Failed here: getConceptGraph');  
         }
