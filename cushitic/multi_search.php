@@ -42,29 +42,33 @@ function describeConcept($concept){
 			$ret = "";
 			if ($sRow =  $conn->fetchAssoc($res)){
 				$ret .= $sRow['concept'] . ": " . $sRow['description'];
+			} else {
+				$ret = "Error: not found concept while looking for $concept";
 			}
 	} else {
 		$ret = "Error: not found concept while looking for $concept";
 	}
-	return $ret;
+	$result  = "<div class=\"bar\">";
+    $result .= "    <span class=\"lemma\">" . $concept . "</span>";
+    $result .= "</div>";
+    $result .= "<div class=\"def\">" . $ret . "</div>";
+
+	return $result;
 }
 
 function do_showConcept($concept){
   $result = "<div id=\"box_lemma\">";
-  $result .= "<div class=\"lemmabar\">Concept: $concept</div>";
+  $result .= " <div class=\"lemmabar\">Concept: $concept</div>";
   $result .= getConceptsList($concept);
-  $result .= "<br/>";
-  $result .= "<br/>";
-  $result .= "<div id=\"describeConcept\">"; 
-  $result .= "  <div class=\"bar\">";
-  $result .= "  <span class=\"lemma\">" . $concept . "</span>";
-  $result .= "  </div>";
-  $result .= "  <div class=\"def\">" . describeConcept($concept) . "</div>";
-  $result .= "  </div>";
+  $result .= " <br/>";
+  $result .= " <br/>";
+  $result .= " <div id=\"describeConcept\">";
+  $result .= describeConcept($concept);
+  $result .= " </div>";
   $result .= "</div>";
   $result .= "<div id=\"box_ethmology\">";
-  $result .= "<div class=\"ethmobar\">" . "Concepts: $concept" . "</div>";
-  $result .= "<div id=\"onto-chart-container\"></div>";
+  $result .= "  <div class=\"ethmobar\">" . "Concepts: $concept" . "</div>";
+  $result .= "  <div id=\"onto-chart-container\"></div>";
   $result .= "</div>";
   
   return $result;

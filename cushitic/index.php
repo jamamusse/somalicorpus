@@ -33,6 +33,10 @@
 	  break;
 	case 'showConcept':
    	  $result = do_showConcept($concept);
+   	  if(isset($formrequest) && $formrequest == 'JS'){
+		  echo $result;
+		  exit;
+   	  }
 	  break;	  
 	case 'wordanalize':
    	  $result = "Coming soon!";
@@ -128,7 +132,8 @@ const dataSource = {
           imagenode: "1",
           imagealign: "MIDDLE",
           imageheight: "30",
-          imagewidth: "40"
+          imagewidth: "40",
+          imageurl: "images/family.jpeg"
         },
         {
           id: "N3",
@@ -156,7 +161,7 @@ const dataSource = {
           imagealign: "MIDDLE",
           imageheight: "30",
           imagewidth: "40",
-          imageurl: "https://s8.postimg.cc/3qz87kmut/electronics.png"
+          imageurl: "images/food.jpeg"
         },
         {
           id: "N5",
@@ -184,7 +189,7 @@ const dataSource = {
           imagealign: "MIDDLE",
           imageheight: "30",
           imagewidth: "40",
-          imageurl: "https://s8.postimg.cc/3qz87kmut/electronics.png"
+          imageurl: "images/food.jpeg"
         },
         {
           id: "N7",
@@ -198,7 +203,7 @@ const dataSource = {
           imagealign: "MIDDLE",
           imageheight: "30",
           imagewidth: "40",
-          imageurl: "https://s8.postimg.cc/3qz87kmut/electronics.png"
+          imageurl: "images/agriculture.jpeg"
         },
         {
           id: "N8",

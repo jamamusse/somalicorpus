@@ -77,13 +77,13 @@ var lastConcept = null;
  	return d; 
 }
  
-function describeConcept(concept, cId){
+function describeConceptBK(concept, cId){
     var desc = '<div class="bar">' +
 	             '<span class="lemma">Concept ID:' + cId + ' - ' + concept + '</span>' +
   			   '</div>' +
   			   '<div class="def">' + concept + '</div>';
 
-    var vNode = document.getElementById(cId);//.style.backgroundColor = "#f44336;";
+    var vNode = document.getElementById(cId);
 	vNode.style.backgroundColor = "red";
 	
  	if (lastConcept != null){
@@ -93,6 +93,37 @@ function describeConcept(concept, cId){
     lastConcept = cId;
   		
 	return desc;
+}
+
+function showConceptBK(concept, cId) {
+	var info = 'Loading ... ' + concept;
+	setInnerHTML('onto-chart-container', info);
+
+	var infoConcept = describeConcept(concept, cId);
+	setInnerHTML('describeConcept', infoConcept);
+	
+	var dataSource = getDSForConcept(concept);
+	var myChart = new FusionCharts({
+		type: "dragnode",
+		renderAt: "onto-chart-container",
+		width: "100%",
+		height: "87%",
+		dataFormat: "json",
+		dataSource
+	  }).render();	
+
+	return false;
+}
+
+function setOutputdConceptContent() {
+    if(httpObject.readyState == 4){
+//        alert(httpObject.responseText);
+        if (httpObject.responseText){
+            setInnerHTML('describeConcept', httpObject.responseText);
+        } else {
+            setInnerHTML('describeConcept', 'Failed here.');           
+        }
+    }
 }
 
 function showConcept(concept, cId) {
@@ -120,7 +151,7 @@ function goConcept(concept, cId) {
 	document.getElementById("op").value = 'showConcept';
 	document.getElementById("concept").value = concept;
 	document.getElementById("form_search").submit();
-	
+		
 }
 /* END 2023 development */
 
@@ -178,3 +209,37 @@ function getHTTPObject(){
       return null;
    }
 }
+
+function doRealSubmit(strQ){    
+    info = 'Loading...';
+        
+   // setInnerHTML('resultSet', 'ok'); return false;
+    setInnerHTML('dialogContent', info);
+    httpObject = getHTTPObject();
+    secondswaiting = 0;
+    if (httpObject != null) {
+        httpObject.open("POST", 'index.php'+strQ, true);
+        httpObject.onreadystatechange = setOutput;
+        httpObject.send(null); 
+    }
+    return false;
+}
+
+function describeConcept(concept, cId){
+    var desc = '<div class="bar">' +
+	             '<span class="lemma">Concept ID:' + cId + ' - ' + concept + '</span>' +
+  			   '</div>' +
+  			   '<div class="def">' + concept + '</div>';
+
+    var vNode = document.getElementById(cId);
+	vNode.style.backgroundColor = "red";
+	
+ 	if (lastConcept != null){
+ 		vNode = document.getElementById(lastConcept);
+ 		vNode.style.backgroundColor="buttonface"; 
+ 	}
+    lastConcept = cId;
+  		
+	return desc;
+}
+
