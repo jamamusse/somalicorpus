@@ -123,7 +123,8 @@ const dataSource = {
           imagenode: "1",
           imagealign: "MIDDLE",
           imageheight: "30",
-          imagewidth: "40"
+          imagewidth: "40",
+          imageurl: "images/numeracy.png"          
         },
         {
           id: "N2",
@@ -193,7 +194,7 @@ const dataSource = {
           imagealign: "MIDDLE",
           imageheight: "30",
           imagewidth: "40",
-          imageurl: "images/food.jpeg"
+          imageurl: "images/fishing.jpeg"
         },
         {
           id: "N7",

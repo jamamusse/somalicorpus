@@ -103,19 +103,55 @@ function getConceptsList($concept){
 	return $ret;
 }
 
+function getThisConcept($code){
+	global $conn;
+	$ret = "";
+	if ($code != 'N00' && $code != NULL){
+		$sql = "SELECT concept, image FROM rsol_c_concept where concode = '" . $code . "'";
+		$res = $conn->query ($sql);
+		if ($conn->isResultSet ($res)) {
+			if ($sRow =  $conn->fetchAssoc($res)){
+				$ret = $code . "_" . $sRow['concept'] . "_" . $sRow['image'];
+			}
+		}
+	}
+	return $ret;
+}
+
 function describeConcept($concept, $formrequest){
 	global $conn, $translateLA;
 	$ret = "Unknown concept";
 	if ($formrequest == 'JSGraph'){
-		//$result = getGraphConcept($concept);
 		$sql = "SELECT concode, concept, parent, image FROM rsol_c_concept where concept = '" . $concept . "'";
 		$res = $conn->query ($sql);
 		if ($conn->isResultSet ($res)) {
 				if ($sRow =  $conn->fetchAssoc($res)){
+					$code = $sRow['concode'];
+					$name = $sRow['concept'];
+					$image = $sRow['image'];
+					//children
+					$children = "";
+					$sql2 = "SELECT concode, concept, image FROM rsol_c_concept where parent = '" . $code . "'";
+					$res2 = $conn->query ($sql2);
+					if ($conn->isResultSet ($res2)) {
+						while ($sRow2  =  $conn->fetchAssoc($res2)){
+							$ccode  = $sRow2['concode'];
+							$cname  = $sRow2['concept'];
+							$cimage = $sRow2['image'];
+							 
+							$children .= ($children ? "-" : "") . $ccode . "_" . $cname . "_" . $cimage;
+						}
+					}	
+					$parent = getThisConcept($sRow['parent']);
 					$languages = "so-re-ma-bo-ba-ar-el-da";
-					$result = $sRow['concode'] . "|" . $sRow['concept'] . "|" . $sRow['parent'] . "|" . $sRow['image'] . "|" . $languages;
+					$result = $code . "|"
+							. $name . "|"
+							. $parent  . "|"
+							. $image . "|"
+							. $children . "|"
+							. $languages;
 				} else {
-					$result = "Error|$concept|query";
+					$result = "Error|$concept|query|||";
 				}
 		} else {
 			$result = "Error|$concept|query";

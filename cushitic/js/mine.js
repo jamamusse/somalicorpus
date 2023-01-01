@@ -10,7 +10,40 @@ var currentConcept = null;
 	
 /* START 2023 development */
 
-function giveT(code, name, image, parent, langs){
+function giveT(code, name, image, parent, langs, children){
+	var aParent;
+	var pcode;
+	var pname;
+	var pimag;
+	var pdElem;
+    var codeConnect = code;
+	var x = 45;
+	if (parent){
+		x = 25;
+	}
+
+	//if parent - add
+	if (parent){
+		aParent =  parent.split('_');
+		pcode  = aParent[0];
+		pname  = aParent[1];
+		pimag  = aParent[2];
+		pdElem = {
+			id: pcode, 
+			x: "55", 
+			y: "88", 
+			alpha: "0", 
+			name: pname, 
+			radius: "55", 
+			shape: "CIRCLE", 
+			imagenode: "1", 
+			imagealign: "MIDDLE", 
+			imageheight: "50", 
+			imagewidth: "50", 
+			imageurl: "images/" + pimag 
+		};
+		codeConnect = pcode;	
+	}
 
 	var d = { 
 chart: { 
@@ -28,7 +61,7 @@ dataset: [ {
 		{ 
 			id: "N0", 
 			x: "86", 
-			y: "84", 
+			y: "86", 
 			alpha: "0", 
 			name: "Concepts", 
 			radius: "60", 
@@ -41,8 +74,8 @@ dataset: [ {
 		}, 
 		{ 
 			id: code, 
-			x: "45", 
-			y: "84", 
+			x: x, 
+			y: "82", 
 			alpha: "0", 
 			name: name, 
 			radius: "50", 
@@ -62,7 +95,7 @@ connectors: [
 		connector: [ 
 			{ 
 				from: "N0", 
-				to: code, 
+				to: codeConnect, 
 				color: "#1aaf5d", 
 				strength: "1", 
 				arrowatstart: "0", 
@@ -74,9 +107,89 @@ connectors: [
 
 };
 
+	//if parent - add what you have created.
+	if (parent){
+		d['dataset'][0]['data'].push(pdElem);
+		var dConnect = 			{ 
+			from: pcode, 
+			to: code, 
+			color: "#1aaf5d", 
+			strength: "1", 
+			arrowatstart: "0", 
+			arrowatend: "0" 
+		};
+		d['connectors'][0]['connector'].push(dConnect);		
+
+	}
+	
+	// if languages - add
+	if (children){
+		const aChildren = children.split("-");
+		var x = 34; 
+		var y = 50;
+		var t = aChildren.length;
+
+		var r = 38;
+		var s = 5;
+		var m = r/2;
+
+		x = (t > 5 ? m/2 : m + ((100-r-(t*s))/t)/2);		
+		for (var i = 0; i < aChildren.length; i++) {
+			const aChild = aChildren[i].split("_");
+			var childCode = aChild[0]; 
+			var childName = aChild[1]; 
+			var childImage = aChild[2]; 
+			var dElem = {
+				id: childCode, 
+				x: x, 
+				y: y, 
+				alpha: "0", 
+				name: childName, 
+				radius: r, 
+				shape: "CIRCLE", 
+				imagenode: "1", 
+				imagealign: "MIDDLE", 
+				imageheight: "50", 
+				imagewidth: "50", 
+				imageurl: "images/" + childImage 
+			};
+			x = x + m - (t > 5 ? 6 : 0);
+			d['dataset'][0]['data'].push(dElem);
+			
+			var dConnect = 			{ 
+				from: code, 
+				to: childCode, 
+				color: "#1aaf5d", 
+				strength: "1", 
+				arrowatstart: "0", 
+				arrowatend: "0" 
+			};
+			d['connectors'][0]['connector'].push(dConnect);
+			const aColors = Array("#1aaf5d", "#E56D40", "#1aaf5d", "#F6F931", "#1aaf5d", "#045AFA", "#1aaf5d", "#000000", "#1aaf5d", "#1aaf5d");
+            var color = aColors[i];
+			// if languages - add
+			if (langs){
+				const aLangs = langs.split("-");
+				for (var j = 0; j < aLangs.length; j++) {
+					var lang = aLangs[j];			
+					var dConnect = 			{ 
+						from: childCode, 
+						to: lang, 
+						color: color, 
+						strength: "1", 
+						arrowatstart: "0", 
+						arrowatend: "0" 
+					};
+					d['connectors'][0]['connector'].push(dConnect);
+				}
+			}
+		}
+	}
+
+	// if languages - add
 	if (langs){
 		const aLangs = langs.split("-");
-		var x = 6; y = 44;
+		var x = 6; y = 25;
 		for (var i = 0; i < aLangs.length; i++) {
 			var lang = aLangs[i];
 			var dElem = {
@@ -97,20 +210,19 @@ connectors: [
 			y = y + (i < 3 ? -5 : 5);
 			d['dataset'][0]['data'].push(dElem);
 			
-			var dConnect = 			{ 
-				from: code, 
-				to: lang, 
-				color: "#1aaf5d", 
-				strength: "1", 
-				arrowatstart: "0", 
-				arrowatend: "0" 
-			};
-			d['connectors'][0]['connector'].push(dConnect);
-
+			if (!children){
+				var dConnect = { 
+					from: code, 
+					to: lang, 
+					color: "#1aaf5d", 
+					strength: "1", 
+					arrowatstart: "0", 
+					arrowatend: "0" 
+				};
+				d['connectors'][0]['connector'].push(dConnect);
+			}
 		}
 	}
-
-	
 
 	return d;
 
@@ -136,6 +248,7 @@ function setOutputdConceptGraph() {
 	var parent = "";
 	var image = "";
  	var langs = "";
+ 	var children = "";
     if(httpObjectG.readyState == 4){
         if (httpObjectG.responseText){
             ds = httpObjectG.responseText;
@@ -145,12 +258,12 @@ function setOutputdConceptGraph() {
 			concept = aInfo[1];
 			parent  = aInfo[2];
 			image   = aInfo[3];
-			langs   = aInfo[4];
-//			langs = "so-re-ma-bo-ba-ar-el-da";
+			children= aInfo[4];
+			langs   = aInfo[5];
         } else {
             setInnerHTML('onto-chart-container', 'Failed here: getConceptGraph');  
         }
-        dataSource = giveT(code, concept, image, parent, langs);
+        dataSource = giveT(code, concept, image, parent, langs, children);
 		var myChart = new FusionCharts({
 			type: "dragnode",
 			renderAt: "onto-chart-container",
