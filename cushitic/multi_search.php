@@ -33,7 +33,7 @@ function getConceptsList($concept){
 	return $ret;
 }
 
-function describeConcept($concept){
+function describeConcept($concept, $formrequest){
 	global $conn;
 	$ret = "Unknown concept";
 	$sql = "SELECT concept, description FROM rsol_c_concept where concept = '" . $concept . "'";
@@ -63,7 +63,7 @@ function do_showConcept($concept){
   $result .= " <br/>";
   $result .= " <br/>";
   $result .= " <div id=\"describeConcept\">";
-  $result .= describeConcept($concept);
+  $result .= describeConcept($concept, "");
   $result .= " </div>";
   $result .= "</div>";
   $result .= "<div id=\"box_ethmology\">";

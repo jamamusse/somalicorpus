@@ -32,8 +32,8 @@
 	  $result = do_search($q, $target) . "<br/>";
 	  break;
 	case 'showConcept':
-   	  if(isset($formrequest) && $formrequest == 'JS'){
-	   	  $result = describeConcept($concept);
+   	  if(isset($formrequest)){
+	   	  $result = describeConcept($concept, $formrequest);
 		  echo $result;
 		  exit;
    	  } else {

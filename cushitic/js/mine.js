@@ -77,23 +77,6 @@ var lastConcept = null;
  	return d; 
 }
  
-function describeConceptBK(concept, cId){
-    var desc = '<div class="bar">' +
-	             '<span class="lemma">Concept ID:' + cId + ' - ' + concept + '</span>' +
-  			   '</div>' +
-  			   '<div class="def">' + concept + '</div>';
-
-    var vNode = document.getElementById(cId);
-	vNode.style.backgroundColor = "red";
-	
- 	if (lastConcept != null){
- 		vNode = document.getElementById(lastConcept);
- 		vNode.style.backgroundColor="buttonface"; 
- 	}
-    lastConcept = cId;
-  		
-	return desc;
-}
 
 function showConceptBK(concept, cId) {
 	var info = 'Loading ... ' + concept;
@@ -117,34 +100,21 @@ function showConceptBK(concept, cId) {
 
 function setOutputdConceptContent() {
     if(httpObject.readyState == 4){
-//        alert(httpObject.responseText);
         if (httpObject.responseText){
             setInnerHTML('describeConcept', httpObject.responseText);
         } else {
-            setInnerHTML('describeConcept', 'Failed here.');           
+            setInnerHTML('describeConcept', 'Failed here: getConceptConent');           
         }
     }
 }
-
-function showConcept(concept, cId) {
-	var info = 'Loading ... ' + concept;
-	setInnerHTML('onto-chart-container', info);
-
-	var strQ = '?op=showConcept1&formrequest=JS&concept=' + concept;
-	info = "loading " + strQ;
-	alert(info);
-    setInnerHTML('describeConcept', info);
-    httpObject = getHTTPObject();
-    secondswaiting = 0;
-    if (httpObject != null) {
-        httpObject.open("POST", 'index.php'+strQ, true);
-        httpObject.onreadystatechange = setOutputdConceptContent;
-        httpObject.send(null); 
-    }
-
-// 	var infoConcept = describeConcept(concept, cId);
-// 	setInnerHTML('describeConcept', infoConcept);
-	
+function setOutputdConceptGraph() {
+    if(httpObject.readyState == 4){
+        if (httpObject.responseText){
+//            setInnerHTML('describeConcept', httpObject.responseText);
+            alert(httpObject.responseText);
+        } else {
+            setInnerHTML('onto-chart-container', 'Failed here: getConceptGraph');  
+        }
 	var dataSource = getDSForConcept(concept);
 	var myChart = new FusionCharts({
 		type: "dragnode",
@@ -154,6 +124,41 @@ function showConcept(concept, cId) {
 		dataFormat: "json",
 		dataSource
 	  }).render();	
+        
+    }
+}
+
+function showConcept(concept, cId) {
+	var info = 'Loading ... ' + concept;
+	setInnerHTML('onto-chart-container', info);
+
+	var strQ = '?op=showConcept&formrequest=JSContent&concept=' + concept;
+    setInnerHTML('describeConcept', info);
+    httpObject = getHTTPObject();
+    secondswaiting = 0;
+    if (httpObject != null) {
+        httpObject.open("POST", 'index.php'+strQ, true);
+        httpObject.onreadystatechange = setOutputdConceptContent;
+        httpObject.send(null); 
+    }
+    var vNode = document.getElementById(cId);
+	vNode.style.backgroundColor = "red";
+	
+ 	if (lastConcept != null){
+ 		vNode = document.getElementById(lastConcept);
+ 		vNode.style.backgroundColor="buttonface"; 
+ 	}
+    lastConcept = cId;
+	var strQ2 = '?op=showConcept&formrequest=JSGraph&concept=' + concept;
+    httpObjectG = getHTTPObject();
+    secondswaiting = 0;
+    if (httpObjectG != null) {
+        httpObjectG.open("POST", 'index.php'+strQ2, true);
+        httpObjectG.onreadystatechange = setOutputdConceptGraph;
+        httpObjectG.send(null); 
+    } else {
+    	alert ("failed here: showConcept" + concept);
+    }
 
 	return false;
 }
