@@ -130,8 +130,20 @@ function showConcept(concept, cId) {
 	var info = 'Loading ... ' + concept;
 	setInnerHTML('onto-chart-container', info);
 
-	var infoConcept = describeConcept(concept, cId);
-	setInnerHTML('describeConcept', infoConcept);
+	var strQ = '?op=showConcept1&formrequest=JS&concept=' + concept;
+	info = "loading " + strQ;
+	alert(info);
+    setInnerHTML('describeConcept', info);
+    httpObject = getHTTPObject();
+    secondswaiting = 0;
+    if (httpObject != null) {
+        httpObject.open("POST", 'index.php'+strQ, true);
+        httpObject.onreadystatechange = setOutputdConceptContent;
+        httpObject.send(null); 
+    }
+
+// 	var infoConcept = describeConcept(concept, cId);
+// 	setInnerHTML('describeConcept', infoConcept);
 	
 	var dataSource = getDSForConcept(concept);
 	var myChart = new FusionCharts({

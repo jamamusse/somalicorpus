@@ -32,11 +32,13 @@
 	  $result = do_search($q, $target) . "<br/>";
 	  break;
 	case 'showConcept':
-   	  $result = do_showConcept($concept);
    	  if(isset($formrequest) && $formrequest == 'JS'){
+	   	  $result = describeConcept($concept);
 		  echo $result;
 		  exit;
-   	  }
+   	  } else {
+	   	  $result = do_showConcept($concept);
+	  }
 	  break;	  
 	case 'wordanalize':
    	  $result = "Coming soon!";
