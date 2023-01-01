@@ -104,7 +104,7 @@ function getConceptsList($concept){
 }
 
 function describeConcept($concept, $formrequest){
-	global $conn;
+	global $conn, $translateLA;
 	$ret = "Unknown concept";
 	if ($formrequest == 'JSGraph'){
 		//$result = getGraphConcept($concept);
@@ -120,18 +120,34 @@ function describeConcept($concept, $formrequest){
 			$result = "Error|$concept|query";
 		}
 	} else {	
+		$gotAtleastOne = 0;
 		$subconcepts = "";
+		$languages   = "";
+		$languages   = array('ar' => "", 'ba' => "", 'bo' => "", 're' => "", 'so' => "", 'el' => "", 'da' => "", 'ma' => "");
 		$sql = "SELECT concode, concept, description FROM rsol_c_concept where concept = '" . $concept . "'";
 		$res = $conn->query ($sql);
 		if ($conn->isResultSet ($res)) {
 				$ret = "";
 				if ($sRow =  $conn->fetchAssoc($res)){
+					$conceptCode = $sRow['concode'];
 					$ret .= $sRow['concept'] . ": " . $sRow['description'];
-					$sql2 = "select concode, concept FROM rsol_c_concept where parent = '" . $sRow['concode'] . "'";
+					$sql2 = "select recid, concode, concept FROM rsol_c_concept where parent = '" . $sRow['concode'] . "'";
 					$res2 = $conn->query ($sql2);
 					if ($conn->isResultSet ($res2)) {
 						while ($sRow2 =  $conn->fetchAssoc($res2)){
-							$subconcepts .= ($subconcepts ? ", " : "") . $sRow2['concept'];
+							$subconcept = $sRow2['concept'];
+							$subconcepts .= ($subconcepts ? ", " : "") . $subconcept;
+						}
+					}
+					$sql3 = "select w.word, w.language from rsol_c_cushiticwords w, rsol_c_concept c, rsol_c_wordconcept r 
+						where c.recid = r.conceptid and w.recno = r.wordid and c.concode = '". $conceptCode . "' order by w.language, w.word";
+					$res3 = $conn->query ($sql3);
+					if ($conn->isResultSet ($res3)) {
+						while ($sRow3 =  $conn->fetchAssoc($res3)){
+							$word = $sRow3['word'];
+							$lang = $sRow3['language'];
+							$languages[$lang] .= ($languages[$lang] ? ", " : "") . $word;
+							$gotAtleastOne = 1;
 						}
 					}
 				} else {
@@ -146,6 +162,16 @@ function describeConcept($concept, $formrequest){
 		$result .= "<div class=\"def\">" . $ret . "</div>";
 		if ($subconcepts){
 			$result .= "<br/><div class=\"def\">Sub concepts: " . $subconcepts . "</div>";
+		}
+		if($gotAtleastOne){
+			$result .= "<br/><div class=\"bar\">";
+			$result .= "    <span class=\"lemma\">Languages</span>";
+			$result .= "</div>";
+			foreach ($languages as $lCode => $words){
+				if ($words){
+					$result .= "<div class=\"def\"><i>" . $translateLA[$lCode] . "</i>:" . $words . "<br/><br/></div>";		
+				}
+			}
 		}
 	}
 	return $result;

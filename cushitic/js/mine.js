@@ -76,7 +76,7 @@ connectors: [
 
 	if (langs){
 		const aLangs = langs.split("-");
-		var x = 8; y = 44;
+		var x = 6; y = 44;
 		for (var i = 0; i < aLangs.length; i++) {
 			var lang = aLangs[i];
 			var dElem = {
@@ -146,7 +146,7 @@ function setOutputdConceptGraph() {
 			parent  = aInfo[2];
 			image   = aInfo[3];
 			langs   = aInfo[4];
-			langs = "so-ba-re-da-el-ar-ma";
+			langs = "so-re-ma-bo-ba-ar-el-da";
         } else {
             setInnerHTML('onto-chart-container', 'Failed here: getConceptGraph');  
         }
