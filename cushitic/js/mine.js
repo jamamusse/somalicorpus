@@ -146,7 +146,7 @@ function setOutputdConceptGraph() {
 			parent  = aInfo[2];
 			image   = aInfo[3];
 			langs   = aInfo[4];
-			langs = "so-re-ma-bo-ba-ar-el-da";
+//			langs = "so-re-ma-bo-ba-ar-el-da";
         } else {
             setInnerHTML('onto-chart-container', 'Failed here: getConceptGraph');  
         }

@@ -112,7 +112,8 @@ function describeConcept($concept, $formrequest){
 		$res = $conn->query ($sql);
 		if ($conn->isResultSet ($res)) {
 				if ($sRow =  $conn->fetchAssoc($res)){
-					$result = $sRow['concode'] . "|" . $sRow['concept'] . "|" . $sRow['parent'] . "|" . $sRow['image'];
+					$languages = "so-re-ma-bo-ba-ar-el-da";
+					$result = $sRow['concode'] . "|" . $sRow['concept'] . "|" . $sRow['parent'] . "|" . $sRow['image'] . "|" . $languages;
 				} else {
 					$result = "Error|$concept|query";
 				}
@@ -122,7 +123,6 @@ function describeConcept($concept, $formrequest){
 	} else {	
 		$gotAtleastOne = 0;
 		$subconcepts = "";
-		$languages   = "";
 		$languages   = array('ar' => "", 'ba' => "", 'bo' => "", 're' => "", 'so' => "", 'el' => "", 'da' => "", 'ma' => "");
 		$sql = "SELECT concode, concept, description FROM rsol_c_concept where concept = '" . $concept . "'";
 		$res = $conn->query ($sql);
