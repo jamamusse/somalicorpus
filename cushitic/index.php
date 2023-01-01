@@ -180,7 +180,7 @@ const dataSource = {
           imagealign: "MIDDLE",
           imageheight: "30",
           imagewidth: "40",
-          imageurl: "https://s8.postimg.cc/3qz87kmut/electronics.png"
+          imageurl: "images/animals.jpeg"
         },
         {
           id: "N6",
@@ -221,7 +221,8 @@ const dataSource = {
           imagenode: "1",
           imagealign: "MIDDLE",
           imageheight: "30",
-          imagewidth: "40"
+          imagewidth: "40",
+          imageurl: "images/environment.jpeg"
         },
         {
           id: "N9",
