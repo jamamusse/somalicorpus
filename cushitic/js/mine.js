@@ -10,8 +10,9 @@ var currentConcept = null;
 	
 /* START 2023 development */
 
-function giveT(code, name){
-var d = { 
+function giveT(code, name, image, parent, langs){
+
+	var d = { 
 chart: { 
 	caption: "Concept identified: " + name, 
 	xaxisminvalue: "0", 
@@ -49,7 +50,8 @@ dataset: [ {
 			imagenode: "1", 
 			imagealign: "MIDDLE", 
 			imageheight: "30", 
-			imagewidth: "40"
+			imagewidth: "40", 
+			imageurl: "images/"+image
 		} 
 		] 
 	} 
@@ -72,6 +74,44 @@ connectors: [
 
 };
 
+	if (langs){
+		const aLangs = langs.split("-");
+		var x = 8; y = 44;
+		for (var i = 0; i < aLangs.length; i++) {
+			var lang = aLangs[i];
+			var dElem = {
+				id: lang, 
+				x: x, 
+				y: y, 
+				alpha: "0", 
+				name: lang, 
+				radius: "38", 
+				shape: "CIRCLE", 
+				imagenode: "1", 
+				imagealign: "MIDDLE", 
+				imageheight: "50", 
+				imagewidth: "50", 
+				imageurl: "images/" + lang + ".png" 
+			};
+			x = x + 14; 
+			y = y + (i < 3 ? -5 : 5);
+			d['dataset'][0]['data'].push(dElem);
+			
+			var dConnect = 			{ 
+				from: code, 
+				to: lang, 
+				color: "#1aaf5d", 
+				strength: "1", 
+				arrowatstart: "0", 
+				arrowatend: "0" 
+			};
+			d['connectors'][0]['connector'].push(dConnect);
+
+		}
+	}
+
+	
+
 	return d;
 
 }
@@ -93,17 +133,24 @@ function setOutputdConceptGraph() {
 	var dataSource = "";
 	var code = "";
 	var concept = "";
+	var parent = "";
+	var image = "";
+ 	var langs = "";
     if(httpObjectG.readyState == 4){
         if (httpObjectG.responseText){
             ds = httpObjectG.responseText;
 
             const aInfo = ds.split("|");
-			code = aInfo[0];
+			code    = aInfo[0];
 			concept = aInfo[1];
+			parent  = aInfo[2];
+			image   = aInfo[3];
+			langs   = aInfo[4];
+			langs = "so-ba-re-da-el-ar-ma";
         } else {
             setInnerHTML('onto-chart-container', 'Failed here: getConceptGraph');  
         }
-        dataSource = giveT('UK', concept);
+        dataSource = giveT(code, concept, image, parent, langs);
 		var myChart = new FusionCharts({
 			type: "dragnode",
 			renderAt: "onto-chart-container",

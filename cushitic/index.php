@@ -130,7 +130,7 @@ const dataSource = {
           x: "31",
           y: "77",
           alpha: "0",
-          label: "Familiy",
+          label: "Family",
           radius: "50",
           shape: "CIRCLE",
           imagenode: "1",
