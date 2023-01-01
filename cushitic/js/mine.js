@@ -6,77 +6,80 @@ var httpObjectG = null;
 var secondswaiting = 0;
 
 var lastConcept = null;
+var currentConcept = null;
 	
 /* START 2023 development */
+
+function giveT(code, name){
+var d = { 
+chart: { 
+	caption: "Concept identified: " + name, 
+	xaxisminvalue: "0", 
+	xaxismaxvalue: "100", 
+	yaxisminvalue: "0", 
+	yaxismaxvalue: "100", 
+	theme: "candy", 
+	basefontsize: "11", 
+	plothovereffect: "0" 
+	}, 
+dataset: [ { 
+	data: [ 
+		{ 
+			id: "N0", 
+			x: "86", 
+			y: "84", 
+			alpha: "0", 
+			name: "Concepts", 
+			radius: "60", 
+			shape: "CIRCLE", 
+			imagenode: "1", 
+			imagealign: "MIDDLE", 
+			imageheight: "50", 
+			imagewidth: "50", 
+			imageurl: "images/globe.png" 
+		}, 
+		{ 
+			id: code, 
+			x: "45", 
+			y: "84", 
+			alpha: "0", 
+			name: name, 
+			radius: "50", 
+			shape: "CIRCLE", 
+			imagenode: "1", 
+			imagealign: "MIDDLE", 
+			imageheight: "30", 
+			imagewidth: "40"
+		} 
+		] 
+	} 
+], 
+connectors: [ 
+	{ 
+		stdthickness: "2", 
+		connector: [ 
+			{ 
+				from: "N0", 
+				to: code, 
+				color: "#1aaf5d", 
+				strength: "1", 
+				arrowatstart: "0", 
+				arrowatend: "0" 
+			} 
+		] 
+	} 
+]
+
+};
+
+	return d;
+
+}
+
 
 /**
  * this is for Cushitic Corpus - Omo-Tana family - functions
  */
- function getDSForConcept(concept){
- 	const d = {
-  chart: {
-    caption: "Concept identified: " + concept,
-    xaxisminvalue:   "0",
-    xaxismaxvalue:   "100",
-    yaxisminvalue:   "0",
-    yaxismaxvalue:   "100",
-    theme:           "candy",
-    basefontsize:    "11",
-    plothovereffect: "0"
-  },
-  dataset: [
-    {
-      data: [
-        {
-          id: "N0",
-          x: "50",
-          y: "45",
-          alpha: "0",
-          name: "Concepts",
-          radius: "60",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "50",
-          imagewidth: "50",
-          imageurl: "images/globe.png"
-        },
-        {
-          id: "N1",
-          x: "52",
-          y: "83",
-          alpha: "0",
-          label: concept,
-          radius: "50",
-          shape: "CIRCLE",
-          imagenode: "1",
-          imagealign: "MIDDLE",
-          imageheight: "30",
-          imagewidth: "40"
-        }
-      ]
-    }
-  ],
-  connectors: [
-    {
-      stdthickness: "2",
-      connector: [
-        {
-          from: "N0",
-          to: "N1",
-          color: "#1aaf5d",
-          strength: "1",
-          arrowatstart: "0",
-          arrowatend: "0"
-        }                
-      ]
-    }
-  ]
-};	
- 	
- 	return d; 
-}
-
 function setOutputdConceptContent() {
     if(httpObject.readyState == 4){
         if (httpObject.responseText){
@@ -87,29 +90,35 @@ function setOutputdConceptContent() {
     }
 }
 function setOutputdConceptGraph() {
+	var dataSource = "";
+	var code = "";
+	var concept = "";
     if(httpObjectG.readyState == 4){
         if (httpObjectG.responseText){
-//            setInnerHTML('describeConcept', httpObject.responseText);
-//            alert('From graph ' + httpObjectG.responseText);
+            ds = httpObjectG.responseText;
+
+            const aInfo = ds.split("|");
+			code = aInfo[0];
+			concept = aInfo[1];
         } else {
             setInnerHTML('onto-chart-container', 'Failed here: getConceptGraph');  
         }
-	var dataSource = getDSForConcept(concept);
-	var myChart = new FusionCharts({
-		type: "dragnode",
-		renderAt: "onto-chart-container",
-		width: "100%",
-		height: "87%",
-		dataFormat: "json",
-		dataSource
-	  }).render();	
-        
+        dataSource = giveT('UK', concept);
+		var myChart = new FusionCharts({
+			type: "dragnode",
+			renderAt: "onto-chart-container",
+			width: "100%",
+			height: "87%",
+			dataFormat: "json",
+			dataSource
+		  }).render();	        
     }
 }
 
 function showConcept(concept, cId) {
 	var info = 'Loading ... ' + concept;
 	setInnerHTML('onto-chart-container', info);
+	currentConcept = concept;
 
 	var strQ = '?op=showConcept&formrequest=JSContent&concept=' + concept;
     setInnerHTML('describeConcept', info);

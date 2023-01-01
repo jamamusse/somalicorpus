@@ -377,6 +377,7 @@ $(document).ready(function() {
 <link rel="stylesheet" href="css/autoSuggest.css" type="text/css" media="screen" charset="utf-8" />
 </head>
 <body>
+<div id="checkError"></div>
 <div id="bodyContainer">
 	<div id="loginDiv">
 		 <form method="post" action="index.php" id="form_search">

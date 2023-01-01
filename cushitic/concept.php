@@ -1,5 +1,75 @@
 <?php
 
+
+function getGraphConcept($concept){
+	global $conn;
+$chart = "  chart: {
+caption: \"Concept identified: " . $concept . "\",
+xaxisminvalue:   \"0\",
+xaxismaxvalue:   \"100\",
+yaxisminvalue:   \"0\",
+yaxismaxvalue:   \"100\",
+theme:           \"candy\",
+basefontsize:    \"11\",
+plothovereffect: \"0\"
+  }";
+$dataset = "  dataset: [
+{
+  data: [
+{
+  id: \"N0\",
+  x: \"50\",
+  y: \"45\",
+  alpha: \"0\",
+  name: \"Concepts\",
+  radius: \"60\",
+  shape: \"CIRCLE\",
+  imagenode: \"1\",
+  imagealign: \"MIDDLE\",
+  imageheight: \"50\",
+  imagewidth: \"50\",
+  imageurl: \"images/globe.png\"
+},
+{
+  id: \"N1\",
+  x: \"52\",
+  y: \"183\",
+  alpha: \"0\",
+  name: \"$concept\",
+  radius: \"50\",
+  shape: \"CIRCLE\",
+  imagenode: \"1\",
+  imagealign: \"MIDDLE\",
+  imageheight: \"30\",
+  imagewidth: \"40\"
+}
+  ]
+}
+  ]";
+
+  $connectors = "  connectors: [
+{
+  stdthickness: \"2\",
+  connector: [
+{
+  from: \"N0\",
+  to: \"N1\",
+  color: \"#1aaf5d\",
+  strength: \"1\",
+  arrowatstart: \"0\",
+  arrowatend: \"0\"
+}                
+  ]
+}
+  ]";
+
+	$ret = "{\n$chart,\n$dataset,\n$connectors}";
+
+
+	return $ret;
+
+}
+
 function getConceptsListMenu(){
 	global $conn;
 	$ret = "no concepts ready";
@@ -37,7 +107,18 @@ function describeConcept($concept, $formrequest){
 	global $conn;
 	$ret = "Unknown concept";
 	if ($formrequest == 'JSGraph'){
-		$result = "but you asked: $formrequest";
+		//$result = getGraphConcept($concept);
+		$sql = "SELECT concode, concept, parent, image FROM rsol_c_concept where concept = '" . $concept . "'";
+		$res = $conn->query ($sql);
+		if ($conn->isResultSet ($res)) {
+				if ($sRow =  $conn->fetchAssoc($res)){
+					$result = $sRow['concode'] . "|" . $sRow['concept'] . "|" . $sRow['parent'] . "|" . $sRow['image'];
+				} else {
+					$result = "Error|$concept|query";
+				}
+		} else {
+			$result = "Error|$concept|query";
+		}
 	} else {	
 		$sql = "SELECT concept, description FROM rsol_c_concept where concept = '" . $concept . "'";
 		$res = $conn->query ($sql);
