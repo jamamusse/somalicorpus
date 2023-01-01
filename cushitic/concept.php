@@ -120,12 +120,20 @@ function describeConcept($concept, $formrequest){
 			$result = "Error|$concept|query";
 		}
 	} else {	
-		$sql = "SELECT concept, description FROM rsol_c_concept where concept = '" . $concept . "'";
+		$subconcepts = "";
+		$sql = "SELECT concode, concept, description FROM rsol_c_concept where concept = '" . $concept . "'";
 		$res = $conn->query ($sql);
 		if ($conn->isResultSet ($res)) {
 				$ret = "";
 				if ($sRow =  $conn->fetchAssoc($res)){
 					$ret .= $sRow['concept'] . ": " . $sRow['description'];
+					$sql2 = "select concode, concept FROM rsol_c_concept where parent = '" . $sRow['concode'] . "'";
+					$res2 = $conn->query ($sql2);
+					if ($conn->isResultSet ($res2)) {
+						while ($sRow2 =  $conn->fetchAssoc($res2)){
+							$subconcepts .= ($subconcepts ? ", " : "") . $sRow2['concept'];
+						}
+					}
 				} else {
 					$ret = "Error: not found concept while looking for $concept";
 				}
@@ -136,6 +144,9 @@ function describeConcept($concept, $formrequest){
 		$result .= "    <span class=\"lemma\">" . $concept . "</span>";
 		$result .= "</div>";
 		$result .= "<div class=\"def\">" . $ret . "</div>";
+		if ($subconcepts){
+			$result .= "<br/><div class=\"def\">Sub concepts: " . $subconcepts . "</div>";
+		}
 	}
 	return $result;
 }
