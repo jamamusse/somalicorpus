@@ -2,7 +2,7 @@
  *    Mine is developped by Jama Musse Jama
  */
 var httpObject = null;
-var httpObjectFra = null;
+var httpObjectG = null;
 var secondswaiting = 0;
 
 var lastConcept = null;
@@ -76,27 +76,6 @@ var lastConcept = null;
  	
  	return d; 
 }
- 
-
-function showConceptBK(concept, cId) {
-	var info = 'Loading ... ' + concept;
-	setInnerHTML('onto-chart-container', info);
-
-	var infoConcept = describeConcept(concept, cId);
-	setInnerHTML('describeConcept', infoConcept);
-	
-	var dataSource = getDSForConcept(concept);
-	var myChart = new FusionCharts({
-		type: "dragnode",
-		renderAt: "onto-chart-container",
-		width: "100%",
-		height: "87%",
-		dataFormat: "json",
-		dataSource
-	  }).render();	
-
-	return false;
-}
 
 function setOutputdConceptContent() {
     if(httpObject.readyState == 4){
@@ -108,10 +87,10 @@ function setOutputdConceptContent() {
     }
 }
 function setOutputdConceptGraph() {
-    if(httpObject.readyState == 4){
-        if (httpObject.responseText){
+    if(httpObjectG.readyState == 4){
+        if (httpObjectG.responseText){
 //            setInnerHTML('describeConcept', httpObject.responseText);
-//            alert(httpObject.responseText);
+//            alert('From graph ' + httpObjectG.responseText);
         } else {
             setInnerHTML('onto-chart-container', 'Failed here: getConceptGraph');  
         }
@@ -225,21 +204,6 @@ function getHTTPObject(){
       alert("Your browser does not support AJAX.");
       return null;
    }
-}
-
-function doRealSubmit(strQ){    
-    info = 'Loading...';
-        
-   // setInnerHTML('resultSet', 'ok'); return false;
-    setInnerHTML('dialogContent', info);
-    httpObject = getHTTPObject();
-    secondswaiting = 0;
-    if (httpObject != null) {
-        httpObject.open("POST", 'index.php'+strQ, true);
-        httpObject.onreadystatechange = setOutput;
-        httpObject.send(null); 
-    }
-    return false;
 }
 
 function describeConcept(concept, cId){

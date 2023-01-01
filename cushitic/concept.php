@@ -36,23 +36,26 @@ function getConceptsList($concept){
 function describeConcept($concept, $formrequest){
 	global $conn;
 	$ret = "Unknown concept";
-	$sql = "SELECT concept, description FROM rsol_c_concept where concept = '" . $concept . "'";
-	$res = $conn->query ($sql);
-	if ($conn->isResultSet ($res)) {
-			$ret = "";
-			if ($sRow =  $conn->fetchAssoc($res)){
-				$ret .= $sRow['concept'] . ": " . $sRow['description'];
-			} else {
-				$ret = "Error: not found concept while looking for $concept";
-			}
-	} else {
-		$ret = "Error: not found concept while looking for $concept";
+	if ($formrequest == 'JSGraph'){
+		$result = "but you asked: $formrequest";
+	} else {	
+		$sql = "SELECT concept, description FROM rsol_c_concept where concept = '" . $concept . "'";
+		$res = $conn->query ($sql);
+		if ($conn->isResultSet ($res)) {
+				$ret = "";
+				if ($sRow =  $conn->fetchAssoc($res)){
+					$ret .= $sRow['concept'] . ": " . $sRow['description'];
+				} else {
+					$ret = "Error: not found concept while looking for $concept";
+				}
+		} else {
+			$ret = "Error: not found concept while looking for $concept";
+		}
+		$result  = "<div class=\"bar\">";
+		$result .= "    <span class=\"lemma\">" . $concept . "</span>";
+		$result .= "</div>";
+		$result .= "<div class=\"def\">" . $ret . "</div>";
 	}
-	$result  = "<div class=\"bar\">";
-    $result .= "    <span class=\"lemma\">" . $concept . "</span>";
-    $result .= "</div>";
-    $result .= "<div class=\"def\">" . $ret . "</div>";
-
 	return $result;
 }
 
