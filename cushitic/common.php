@@ -12,4 +12,14 @@ $translateLA = array('UKNOWN' => 'Ma garan / unknown',
                      'el'     => 'El Molo',
                      'da'     => 'Dasanach'
                     );
+                    
+                    
+                    
+function getPublicationRef(){
+	$ret = "<p style = 'font-size:11px; text-align:left'>";
+	$ret .= "Publication - Tirsit Yetbarek and Jama Musse Jama (2023), ";
+	$ret .= "<i>Extension of the Somali Corpus structure to the Omo-Tana branch of the Cushitic languages family.</i> (forthcoming)";
+	$ret .= "</p>";
+	return $ret;
+}                    
 ?>

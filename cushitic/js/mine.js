@@ -275,12 +275,12 @@ function setOutputdConceptGraph() {
     }
 }
 
-function showConcept(concept, cId) {
+function showConcept(concept, cId, parent) {
 	var info = 'Loading ... ' + concept;
 	setInnerHTML('onto-chart-container', info);
 	currentConcept = concept;
 
-	var strQ = '?op=showConcept&formrequest=JSContent&concept=' + concept;
+	var strQ = '?op=showConcept&formrequest=JSContent&parent='+parent+'&concept=' + concept;
     setInnerHTML('describeConcept', info);
     httpObject = getHTTPObject();
     secondswaiting = 0;
@@ -290,14 +290,16 @@ function showConcept(concept, cId) {
         httpObject.send(null); 
     }
     var vNode = document.getElementById(cId);
-	vNode.style.backgroundColor = "red";
+    if (vNode){
+		vNode.style.backgroundColor = "red";
+		if (lastConcept != null){
+			vNode = document.getElementById(lastConcept);
+			vNode.style.backgroundColor="buttonface"; 
+		}
+		lastConcept = cId;
+    }
 	
- 	if (lastConcept != null){
- 		vNode = document.getElementById(lastConcept);
- 		vNode.style.backgroundColor="buttonface"; 
- 	}
-    lastConcept = cId;
-	var strQ2 = '?op=showConcept&formrequest=JSGraph&concept=' + concept;
+	var strQ2 = '?op=showConcept&formrequest=JSGraph&parent='+parent+'&concept=' + concept;
     httpObjectG = getHTTPObject();
     secondswaiting = 0;
     if (httpObjectG != null) {
@@ -311,10 +313,11 @@ function showConcept(concept, cId) {
 	return false;
 }
 
-function goConcept(concept, cId) {
+function goConcept(concept, cId, parent) {
 	lastConcept = cId;
 	document.getElementById("op").value = 'showConcept';
 	document.getElementById("concept").value = concept;
+	document.getElementById("parent").value = parent;
 	document.getElementById("form_search").submit();
 		
 }

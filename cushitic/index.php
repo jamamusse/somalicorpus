@@ -34,7 +34,7 @@
 	  break;
 	case 'showConcept':
    	  if(isset($formrequest)){
-	   	  $result = describeConcept($concept, $formrequest);
+	   	  $result = describeConcept($concept, $parent, $formrequest);
 		  echo $result;
 		  exit;
    	  } else {
@@ -187,14 +187,13 @@ const dataSource = {
           x: "51",
           y: "11",
           alpha: "0",
-          label: "Fishing",
+          label: "",
           radius: "50",
           shape: "CIRCLE",
           imagenode: "1",
           imagealign: "MIDDLE",
           imageheight: "30",
-          imagewidth: "40",
-          imageurl: "images/fishing.jpeg"
+          imagewidth: "40"
         },
         {
           id: "N7",
@@ -385,10 +384,11 @@ $(document).ready(function() {
 		 <form method="post" action="index.php" id="form_search">
 			 <input type="hidden" name="op" value="search" id="op" />
 			 <input type="hidden" name="concept" value="search" id="concept" />
+			 <input type="hidden" name="parent" value="search" id="concept" />
 			 <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
 			 <input type="submit" value="search on" />
 			 <strong>Omo-Tana Family Corpus: over 7.3 million Lowland East Cushitic words or</strong>
-			 <button onclick="goConcept('Concepts', 'N0'); return false;">browse concepts</button>
+			 <button onclick="goConcept('Concepts', 'N0', 'N0'); return false;">browse concepts</button>
 
 			 
 			 <strong><i>like: </i></strong><?php echo getConceptsListMenu(); ?> &#8921;&#8921;<strong><a href=".">Home</a></strong>

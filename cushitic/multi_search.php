@@ -39,7 +39,9 @@ function do_search($q, $target){
   $result .= "<div id=\"box_ethmology\">";
   $result .= "<div class=\"ethmobar\">" . "Concepts" . "</div>";
   $result .= "<div id=\"onto-chart-container\"></div>";
+  $result .= getPublicationRef();
   $result .= "</div>";
+
 
   return $result;
 }
