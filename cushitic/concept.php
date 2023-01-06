@@ -230,6 +230,7 @@ function describeConcept($concept, $parent, $formrequest){
 			$result .= "    <span class=\"lemma\">" . $pp['concept'] . "</span>";
 			$result .= "</div>";
 			$result .= "<div class=\"def\">" . $pp['description'] . "</div><br/>";
+			$result .= "<div class=\"def\">Sub concepts: " . getConceptsList($pp['concept'], $parentCode) . "</div><br/>";
 		}
 		$result .= "<div class=\"bar\">";
 		$result .= "    <span class=\"lemma\">" . $concept .  ($pp ? " subclass of " . $pp['concept'] : "") . "</span>";

@@ -241,7 +241,7 @@ const dataSource = {
           x: "71",
           y: "76",
           alpha: "0",
-          label: "Language shift",
+          label: "Intra-Omo-Tana words",
           radius: "50",
           shape: "CIRCLE",
           imagenode: "1",
@@ -387,7 +387,9 @@ $(document).ready(function() {
 			 <input type="hidden" name="parent" value="search" id="concept" />
 			 <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
 			 <input type="submit" value="search on" />
-			 <strong>Omo-Tana Family Corpus: over 7.3 million Lowland East Cushitic words or</strong>
+			 <select name="searchtype"><option value="wordlis">Omo-Tana WordList</option>
+			 			<option value="SoremaboBaarelda">Soremabo-Baarelda</option></select>
+			 <strong>Omo-Tana Family Corpus: 7.3 million Lowland East Cushitic words or</strong>
 			 <button onclick="goConcept('Concepts', 'N0', 'N0'); return false;">browse concepts</button>
 
 			 
