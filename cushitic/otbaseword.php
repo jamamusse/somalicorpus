@@ -242,6 +242,8 @@ function getFilledForm($wid){
 	           <td class=\"data\" colspan=\"2\"><input size=\"35\" name=\"eng\" type=\"text\" readonly value=\"" . $eng . "\"/></td>
 	           <td class=\"label\" colspan=\"2\">Semantic</td>
 	           <td class=\"data\" colspan=\"2\"><select name=\"semantic\">" . getoptions($nsemantics, $semantic) . "</select></td>
+	           <td class=\"label\" colspan=\"2\"><font color=\"red\">Working on</font></td>	           
+	           <td class=\"data\" colspan=\"2\"><font color=\"red\"><i><u>$eng</u></i></font></td>	           
 	           </tr>";
 	$ret .= "<tr><td class=\"labelH\">Somali</td>
 				 <td class=\"labelH\">Rendille</td>
