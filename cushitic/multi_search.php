@@ -4,22 +4,22 @@ function do_search($q, $target){
   global $conn, $translateLA, $concepts, $searchtype;
   $rows = ""; $languagesfound = "";
   $i = 0; $lfound = 0; $iFound  = "";
-  if ($searchtype == 'SoremaboBaarelda'){
-  	$sql = "SELECT * FROM rsol_c_otcommons WHERE MATCH (so,re,ma,bo,ba,ar,el,da,english) AGAINST ('$q')";
+  if ($searchtype == 'SoremaboBaarelda' || $searchtype == 'SwadishWordList'){
+  	$sql = "SELECT * FROM " . ($searchtype == 'SoremaboBaarelda' ? "rsol_c_otcommons" : "rsol_c_otsawidsh") . " WHERE MATCH (so,re,ma,bo,ba,ar,el,da,english) AGAINST ('$q')";
   	if($conn){
 		 $res = $conn->query($sql);
 		 if ($conn->isResultSet($res)) {
-			while ($sRow =  $conn->fetchAssoc($res)){
-				$rows .= "<tr><td>" . $sRow['so'] . "</td><td>" . $sRow['re'] . "</td><td>" . $sRow['ma'] . "</td><td>" . $sRow['bo'] . "</td>
-							  <td>" . $sRow['ba'] . "</td><td>" . $sRow['ar'] . "</td><td>" . $sRow['el'] . "</td><td>" . $sRow['da'] . "</td></tr>";
-			}
-			$rows = "<table width=\"100%\" border=\"1\">" . 
+			if ($sRow =  $conn->fetchAssoc($res)){
+				$rows = "<table width=\"100%\" border=\"1\">" . 
+					"<tr><td colspan=\"8\" align=\"center\"><a href=\"?op=manageOtBaseWord&func=edit&wid=". $sRow['recid'] . "\">" . $sRow['english'] . "</a>: " . $sRow['semantic'] . "</td></tr>" . 
 					"<tr><th>SO</th><th>RE</th><th>MA</th><th>BO</th><th>BA</th><th>AR</th><th>EL</th><th>DA</th></tr>" .
-					"$rows" .
+					"<tr><td>" . $sRow['so'] . "</td><td>" . $sRow['re'] . "</td><td>" . $sRow['ma'] . "</td><td>" . $sRow['bo'] . 
+					"</td><td>" . $sRow['ba'] . "</td><td>" . $sRow['ar'] . "</td><td>" . $sRow['el'] . "</td><td>" . $sRow['da'] . "</td></tr>" .
 					"</table>";
-		}
+			}
+		}	
   	}
-  	$iFound = "$q is " . ($rows ? "" : "not") . "present in the Soremabo-Baarelda database";
+  	$iFound = "$q is " . ($rows ? "" : "not") . " present in the ". ($searchtype == 'SoremaboBaarelda' ? "Soremabo-Baarelda" : "Sawdish List") . " Database";
   } else {
 	  $sql = "select language, word, meaning, pos, def_dictionary, english from rsol_c_cushiticwords where word like '$q'";
 	  if ($conn){

@@ -21,5 +21,16 @@ function getPublicationRef(){
 	$ret .= "<i>Extension of the Somali Corpus structure to the Omo-Tana branch of the Cushitic languages family.</i> (forthcoming)";
 	$ret .= "</p>";
 	return $ret;
-}                    
+} 
+
+function getoptions ($aoptions, $current){
+        $ret = "<option></option>";
+        $ret = "";
+        foreach ($aoptions as $option => $label){
+                $selected = ($option == $current ? "selected" : "");
+                $ret .= "<option value='$option' $selected>$label</option>";
+        }
+        return $ret;
+}
+                   
 ?>

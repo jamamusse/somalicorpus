@@ -118,7 +118,7 @@ function getThisConcept($code){
 
 function getThisConceptByCode($code){
 	global $conn;
-	$ret = ['concept' => '', 'description' => '', 'image' => ''];
+	$ret = array('concept' => '', 'description' => '', 'image' => '');
 	if ($code != NULL){
 		$sql = "SELECT concept, description, image FROM rsol_c_concept where concode = '" . $code . "'";
 		$res = $conn->query ($sql);
@@ -133,7 +133,7 @@ function getThisConceptByCode($code){
 
 function getConceptParent($concept){
 	global $conn;
-	$ret = ['parent' =>  "N00"];
+	$ret = array('parent' =>  "N00");
 	if ($concept != NULL){
 		$sql = "SELECT parent, description FROM rsol_c_concept where concept = '" . $concept . "'";
 		$res = $conn->query ($sql);
@@ -254,7 +254,8 @@ function describeConcept($concept, $parent, $formrequest){
 }
 
 function do_showConcept($concept){
-  $parent = getConceptParent($concept)['parent'];
+  $a = getConceptParent($concept);
+  $parent = $a['parent'];
   $result = "<div id=\"box_lemma\">";
   $result .= " <div class=\"lemmabar\">Concept: $concept</div>";
   $result .= getConceptsList($concept, "N00");

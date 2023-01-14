@@ -40,7 +40,11 @@
    	  } else {
 	   	  $result = do_showConcept($concept);
 	  }
-	  break;	  
+	  break;
+	case 'manageOtBaseWord': 
+	  include_once("otbaseword.php"); 
+   	  $result = manageOtBaseWord();
+	  break;
 	case 'wordanalize':
    	  $result = "Coming soon!";
 	  break;	  
@@ -387,7 +391,8 @@ $(document).ready(function() {
 			 <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
 			 <input type="submit" value="search on" />
 			 <select name="searchtype"><option value="wordlis">Omo-Tana WordList</option>
-			 			<option value="SoremaboBaarelda">Soremabo-Baarelda</option></select>
+			 			<option value="SoremaboBaarelda">Soremabo-Baarelda</option>
+			 			<option value="SwadishWordList">Swadish Word List</option></select>
 			 <strong>Omo-Tana Family Corpus: 7.3 million Lowland East Cushitic words or</strong>
 			 <button onclick="goConcept('Concepts', 'N0', 'N0'); return false;">browse concepts</button>
 

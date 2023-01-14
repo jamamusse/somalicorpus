@@ -349,14 +349,14 @@ FOOTER
 #result {
 	font-size: 0.8em;
 	padding-left: 5px;
-        padding-right: 5px;
+    padding-right: 5px;
 	padding-top: 0px;
 	color: #474836;
 	border-color: #cccccc;
 	border-style: solid;
 	border-width: 1px;
 	background-color: #dedebb;
-	text-align: left;
+	text-align: center;
 	width: 100%;
 }
 
@@ -720,9 +720,9 @@ FOOTER
     text-align: right;
 }
 
-#user_table {
+#word_table {
 	font-size: 0.8em;
-	padding-left: 0px;
+	padding-left: 10px;
 	padding-right: 0px;
 	padding-top: 0px;
 	color: #474836;
@@ -734,35 +734,38 @@ FOOTER
 	width: 1082px;	
 }
 
-#user_table table {
+#word_table table {
 	width: 90%;
 	border: 0;
 	margin-right: 0px;
 	margin-left: 0px;
 }
 
-#user_table table .label{
+#word_table table .labelH{
+	text-align: center;
+}
+
+#word_table table .label{
 	float: right;
-	width: 130px;
 }
 
-#user_table table input {
-	width: 200px;
+#word_table table input {
+	width: 129px;
 }
 
-#user_table table input readonly{
+#word_table table input readonly{
 	color: red;
 }
 
-#user_table table .readonly{
+#word_table table .readonly{
 	color: red;
 }
 
-#user_table table select {
+#word_table table select {
 	width: 200px;
 }
 /*	width: 1082px;	*/
-#user_tableN {
+#word_tableN {
 	color: #474836;
 	border-color: #cccccc;
 	border-style: solid;
@@ -773,20 +776,20 @@ FOOTER
 	padding-top: 0px;
 	text-align: center;
 }
-#user_tableN table {
+#word_tableN table {
 	background-color: #dedebb;
 }
-#user_tableN table .label{
+#word_tableN table .label{
 	width: 130px;
 }
-#user_tableN table input {
+#word_tableN table input {
 	width: 200px;
 }
-#user_tableN table select {
+#word_tableN table select {
 	width: 200px;
 }
 
-#user_tableN table th {
+#word_tableN table th {
 	background-color: #dedebb;
 	text-align: left;
     color: white;
