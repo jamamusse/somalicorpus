@@ -43,7 +43,7 @@ $nsemantics = Array (
 	'body verb' => 'Body verb',
 	'body part' => 'Body part',
 	'animal product' => 'Animal product',
-	'animal' => 'Aimal',
+	'animal' => 'Animal',
 	'adjective' => 'Adjective'
 );
 
