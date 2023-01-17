@@ -107,11 +107,11 @@ function stubEditWord($wid){
 
 function editWord ($wid){
 	global $conn, $op, $opMe, $func;
-	global $eng, $so, $re, $ma, $bo, $ba, $ar, $el, $da, $semantic;
+	global $eng, $so, $re, $ma, $bo, $ba, $ar, $el, $da, $semantic, $reference;
 	
 	if ($wid){
 		if ($func == 'edit'){
-			$sql    = "SELECT english, so, re, ma, bo, ba, ar, el, da, semantic
+			$sql    = "SELECT english, so, re, ma, bo, ba, ar, el, da, semantic, reference
 					   FROM rsol_c_otsawidsh
 					   WHERE `recid` = '$wid'";
 			if ($res = $conn->query ( $sql )){
@@ -127,6 +127,8 @@ function editWord ($wid){
 						 $el       = $sRow['el'];
 						 $da       = $sRow['da'];
 						 $semantic = $sRow['semantic'];
+						 $reference= $sRow['reference'];
+						 
 
 						 $func = 'update';
 						 $ret = getFilledForm($wid);
@@ -150,6 +152,7 @@ function editWord ($wid){
 			$el    = addslashes($el);
 			$da    = addslashes($da);			
 			$eng    = addslashes($eng);
+			$reference = addslashes($reference);
 			$sql = "update rsol_c_otsawidsh
 					   SET 
 					   	`english`  = '$eng',
@@ -161,7 +164,8 @@ function editWord ($wid){
 					   	`ar`       = '$ar',
 					   	`el`       = '$el',
 					   	`da`       = '$da',
-					   	`semantic` = '$semantic'					   	
+					   	`semantic` = '$semantic',
+					   	`reference` = '$reference'
 					   WHERE `recid` = '$wid'";
 			if ($res = $conn->query ( $sql )){
 				if (!$conn->error ()) {
@@ -220,7 +224,7 @@ function isAdmin(){
 
 function getFilledForm($wid){
 	global $conn, $op, $func, $nsemantics, $HaaMaya, $foriegnLanguages;
-	global $eng, $so, $re, $ma, $bo, $ba, $ar, $el, $da, $semantic, $startch;
+	global $eng, $so, $re, $ma, $bo, $ba, $ar, $el, $da, $semantic, $reference, $startch;
 	$readonly = "";
 	$meaning = 0; $plural = "";
 	
@@ -238,12 +242,11 @@ function getFilledForm($wid){
 	
 	$ret .= "<table id=\"\" align=\"center\" border=\"1\">";
 	$ret .= "<tr>
-	           <td class=\"label\" colspan=\"2\">English word</td>
+	           <td class=\"label\">English word</td>
 	           <td class=\"data\" colspan=\"2\"><input size=\"35\" name=\"eng\" type=\"text\" readonly value=\"" . $eng . "\"/></td>
-	           <td class=\"label\" colspan=\"2\">Semantic</td>
+	           <td class=\"label\">Semantic</td>
 	           <td class=\"data\" colspan=\"2\"><select name=\"semantic\">" . getoptions($nsemantics, $semantic) . "</select></td>
-	           <td class=\"label\" colspan=\"2\"><font color=\"red\">Working on</font></td>	           
-	           <td class=\"data\" colspan=\"2\"><font color=\"red\"><i><u>$eng</u></i></font></td>	           
+	           <td class=\"data\" colspan=2>Working on <font color=\"red\"><i><u>$eng</u></i></font></td>	           
 	           </tr>";
 	$ret .= "<tr><td class=\"labelH\">Somali</td>
 				 <td class=\"labelH\">Rendille</td>
@@ -262,6 +265,9 @@ function getFilledForm($wid){
 				 <td class=\"data\"><input size=\"18\" name=\"ar\" type=\"text\" $readonly value=\"" . $ar . "\"/></td>
 				 <td class=\"data\"><input size=\"18\" name=\"el\" type=\"text\" $readonly value=\"" . $el . "\"/></td>
 				 <td class=\"data\"><input size=\"18\" name=\"da\" type=\"text\" $readonly value=\"" . $da . "\"/></td>
+			 </tr>";
+	$ret .= "<tr><td class=\"labelH\">References:</td>
+				 <td class=\"data\" colspan=7><textarea cols=\"114\" rows=\"5\" name=\"reference\">$reference</textarea></td>
 			 </tr>";
 
 /*
