@@ -82,6 +82,50 @@ function listTokens($char){
 }
 
 
+function checkPoint(){
+	global $conn, $translateLA;
+	$aRes = array('english' => 0, 'so' => 0, 're' => 0, 'ma' => 0, 'bo' => 0, 'ba' => 0, 'ar' => 0, 'el' => 0, 'da' => 0);
+	$ret = "";
+	$data = "";
+	foreach($aRes as $l => $val){
+		$sql = "SELECT count(*) n FROM `rsol_c_otsawidsh` WHERE $l <> ''";
+		if ($res = $conn->query ( $sql )){
+			if ($conn->isResultSet ( $res )) {
+				while ($sRow = $conn->fetchAssoc ( $res ) ) {
+					$data .= ($data ? ", " : "") . "{\"label\": \"" . ($l == 'english' ? 'English' : $translateLA[$l]) . "\", \"value\": \"" . $sRow['n'] . "\"}";
+					$aRes[$l] = $sRow['n'];
+				}  
+			}
+		}
+	}
+	$data = "\"data\": [". $data . "]";	
+	$ret .= "
+<script type=\"text/javascript\">
+FusionCharts.ready(function(){
+      var genderChart = new FusionCharts({
+        \"type\": \"column2d\",
+        \"renderAt\": \"onto-chart-stats\",
+        \"width\": \"1024\",
+        \"height\": \"300\",
+        \"dataFormat\": \"json\",
+        \"dataSource\": {\"chart\": {
+\"caption\": \"So far compiled statistics\",
+\"subCaption\": \"\",
+\"xAxisName\": \"Language\",
+\"yAxisName\": \"Number of words filled\",
+\"numberPrefix\": \"\",
+\"theme\": \"fint\"
+    },
+$data
+        }});
+	genderChart.render();
+    }
+)
+</script>";
+	
+	return $ret;
+}
+
 function checkDoubleLife($word){
    global $conn;
    $wid = -1;
@@ -235,9 +279,11 @@ function getFilledForm($wid){
 	if (!isAdmin()){
 		$readonly = "class=\"readonly\" readonly";
 	}
-	$ret = "<div id=\"word_table\"><form method=\"post\" action=\"index.php\">
+	$ret  = "<div id=\"word_table\">";
+	$ret .= "<form method=\"post\" action=\"index.php\">
 	<input type=\"hidden\" value=\"$op\" name=\"op\">
 	<input type=\"hidden\" value=\"$wid\" name=\"wid\">
+	<input type=\"hidden\" value=\"$startch\" name=\"startch\">
 	<input type=\"hidden\" value=\"" . ($wid == -1 ? "add" : "update") . "\" name=\"func\">";
 	
 	$ret .= "<table id=\"\" align=\"center\" border=\"1\">";
@@ -287,7 +333,10 @@ function getFilledForm($wid){
 	if ($startch){
 		$ret .= listTokens($startch);
 	}
-	$ret .= "</div>";
+	$ret .= "<p></p></div>";
+	$ret .= "<div id=\"stat_chart\"><div id=\"onto-chart-stats\"></div></div>";
+	$ret .= checkPoint();  
+
 	return $ret;
 
 }
