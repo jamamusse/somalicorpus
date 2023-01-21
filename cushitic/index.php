@@ -395,7 +395,7 @@ $(document).ready(function() {
 			 			<option value="SwadishWordList">Swadish Word List</option></select>
 			 <strong>Omo-Tana Family Corpus: 7.3 million Lowland East Cushitic words or</strong>
 			 <button onclick="goConcept('Concepts', 'N0', 'N0'); return false;">browse concepts</button>
- 			 &#8921;&#8921;<strong><a href=".">Home</a></strong>
+ 			 &#8921;&#8921;<strong><a href=".">Home</a> | <a href="?op=manageOtBaseWord&func=edit&wid=1">Edit</a></strong>
 			 <input class="inputtext" type="texta" name="q" value=""/>
 		 </form>
 	</div>

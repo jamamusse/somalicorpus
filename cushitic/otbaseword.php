@@ -83,7 +83,7 @@ function listTokens($char){
 
 
 function checkPoint(){
-	global $conn, $translateLA;
+	global $conn, $translateLA, $opMe, $wid, $startch;
 	$aRes = array('english' => 0, 'so' => 0, 're' => 0, 'ma' => 0, 'bo' => 0, 'ba' => 0, 'ar' => 0, 'el' => 0, 'da' => 0);
 	$ret = "";
 	$data = "";
@@ -92,7 +92,7 @@ function checkPoint(){
 		if ($res = $conn->query ( $sql )){
 			if ($conn->isResultSet ( $res )) {
 				while ($sRow = $conn->fetchAssoc ( $res ) ) {
-					$data .= ($data ? ", " : "") . "{\"label\": \"" . ($l == 'english' ? 'English' : $translateLA[$l]) . "\", \"value\": \"" . $sRow['n'] . "\"}";
+					$data .= ($data ? ", " : "") . "{\"label\": \"" . ($l == 'english' ? 'English' : $translateLA[$l]) . "\", \"value\": \"" . $sRow['n'] . "\", \"link\": \"?op=$opMe&func=check&ll=$l&wid=$wid&startch=$startch\"}";
 					$aRes[$l] = $sRow['n'];
 				}  
 			}
@@ -150,11 +150,10 @@ function stubEditWord($wid){
 }
 
 function editWord ($wid){
-	global $conn, $op, $opMe, $func;
+	global $conn, $op, $opMe, $func, $lang;
 	global $eng, $so, $re, $ma, $bo, $ba, $ar, $el, $da, $semantic, $reference;
-	
 	if ($wid){
-		if ($func == 'edit'){
+		if ($func == 'edit' || $func == 'check'){
 			$sql    = "SELECT english, so, re, ma, bo, ba, ar, el, da, semantic, reference
 					   FROM rsol_c_otsawidsh
 					   WHERE `recid` = '$wid'";
@@ -172,9 +171,7 @@ function editWord ($wid){
 						 $da       = $sRow['da'];
 						 $semantic = $sRow['semantic'];
 						 $reference= $sRow['reference'];
-						 
-
-						 $func = 'update';
+			 
 						 $ret = getFilledForm($wid);
 					} else {
 						$ret = "Could not find: $wid";
@@ -268,12 +265,28 @@ function isAdmin(){
 
 function getFilledForm($wid){
 	global $conn, $op, $func, $nsemantics, $HaaMaya, $foriegnLanguages;
+	global $ll;
 	global $eng, $so, $re, $ma, $bo, $ba, $ar, $el, $da, $semantic, $reference, $startch;
 	$readonly = "";
 	$meaning = 0; $plural = "";
+	$check = "";
 	
 	if ($func == 'new'){
 	    $func = 'add';
+	}
+	if ($func == 'check'){
+		$sql   = "select recid, english FROM `rsol_c_otsawidsh` where `$ll` IS NULL OR `$ll` = ''";
+		if ($res = $conn->query ( $sql )){
+			if ($conn->isResultSet ( $res )) {
+				$i = 0;
+				while ($sRow = $conn->fetchAssoc ( $res ) ) {
+					$check .= " <a href=\"?op=manageOtBaseWord&func=check&ll=so&wid=" . $sRow['recid'] . "&startch=a\">" . $sRow['english'] . "</a>";
+					$i++;
+				} 
+				$check = "Missing $i terms: " . $check;
+			}
+		}		
+	    $func  = 'update';
 	}
 	$menuback = "Define navigation:<p>" . getABC() . "</p>";
 	if (!isAdmin()){
@@ -334,8 +347,12 @@ function getFilledForm($wid){
 		$ret .= listTokens($startch);
 	}
 	$ret .= "<p></p></div>";
-	$ret .= "<div id=\"stat_chart\"><div id=\"onto-chart-stats\"></div></div>";
+	$ret .= "<div id=\"stat_chart\"><div id=\"onto-chart-stats\"></div><p>";
 	$ret .= checkPoint();  
+	if ($check){
+		$ret .= "$check";
+	}
+	$ret .= "</p></div>";
 
 	return $ret;
 
@@ -465,7 +482,13 @@ function manageOtBaseWord(){
 			break;
 		case 'edit' :
 			if ($wid){
-//				$resultato .= "Read this data from DB: $wid<br/>";
+				$resultato .= stubEditWord ($wid);
+			} else {
+				$resultato .= "Need the word id";
+			}
+			break;
+		case 'check' :
+			if ($wid){
 				$resultato .= stubEditWord ($wid);
 			} else {
 				$resultato .= "Need the word id";
@@ -473,7 +496,6 @@ function manageOtBaseWord(){
 			break;
 		case 'update' :
 			if ($wid){
-//				$resultato .= "Saved this data to the DB: $wid<br/>";
 				$resultato .= editWord ($wid);
 			} else {
 				$resultato .= "Need the word id";
