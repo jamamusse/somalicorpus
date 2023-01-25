@@ -267,7 +267,7 @@ function getFilledForm($wid){
 	global $conn, $op, $func, $nsemantics, $HaaMaya, $foriegnLanguages;
 	global $ll;
 	global $eng, $so, $re, $ma, $bo, $ba, $ar, $el, $da, $semantic, $reference, $startch;
-	$readonly = "";
+	$readonly = "readonly";
 	$meaning = 0; $plural = "";
 	$check = "";
 	
@@ -304,7 +304,7 @@ function getFilledForm($wid){
 	           <td class=\"label\">English word</td>
 	           <td class=\"data\" colspan=\"2\"><input size=\"35\" name=\"eng\" type=\"text\" readonly value=\"" . $eng . "\"/></td>
 	           <td class=\"label\">Semantic</td>
-	           <td class=\"data\" colspan=\"2\"><select name=\"semantic\">" . getoptions($nsemantics, $semantic) . "</select></td>
+	           <td class=\"data\" colspan=\"2\"><select disabled=true name=\"semantic\">" . getoptions($nsemantics, $semantic) . "</select></td>
 	           <td class=\"data\" colspan=2>Working on <font color=\"red\"><i><u>$eng</u></i></font></td>	           
 	           </tr>";
 	$ret .= "<tr><td class=\"labelH\">Somali</td>
@@ -340,7 +340,7 @@ function getFilledForm($wid){
 */		
 	$ret .= "</table>";
 	
-	$ret .= "<input type=\"submit\" value=\"Save data\">";
+	$ret .= "<input disabled=true type=\"submit\" value=\"Save data\">";
 
 	$ret .= "</form>$menuback";
 	if ($startch){
