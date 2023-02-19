@@ -267,7 +267,8 @@ function getFilledForm($wid){
 	global $conn, $op, $func, $nsemantics, $HaaMaya, $foriegnLanguages;
 	global $ll;
 	global $eng, $so, $re, $ma, $bo, $ba, $ar, $el, $da, $semantic, $reference, $startch;
-	$readonly = "readonly";
+//	$readonly = "readonly";
+	$readonly = "";
 	$meaning = 0; $plural = "";
 	$check = "";
 	
